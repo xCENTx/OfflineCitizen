@@ -1,0 +1,9 @@
+# ignore everything
+*
+
+# unignore .gitignore
+!.gitignore
+
+# unignore source file
+!exMemory.hpp
+!README.md
