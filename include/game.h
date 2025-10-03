@@ -379,6 +379,7 @@ namespace StarCitizen
 		
 		/* EAC */
 		inline constexpr auto oEAC_HandleDiscipline = 0x6806DF0;					//	"HandleEACResult GlobalGameUI"	| E8 ? ? ? ? C6 87 ? ? ? ? ? 48 8B CF E8 ? ? ? ? 8B D8
+		inline constexpr auto oBypassPUCheckpoint = 0x24EB9D3;						//	.text:00000001424EB9D3                 jnz     short loc_1424EBA2E	|	"Change Server Start" | "IsShardPersisted[$$] IsServer[$$] IsMultiplayer[$$]"
 
 
 		/* CXConsole */

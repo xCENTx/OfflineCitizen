@@ -2,6 +2,7 @@
 #include <game.h>
 #include <gui.h>
 #include <sdk/DataCore.h>
+#include "dumper.h"
 
 
 namespace StarCitizen
@@ -5043,6 +5044,14 @@ namespace StarCitizen
 						        char* cmds[3] = { (char*)cmd.Name, __("EA_Kareah_FreeFlight") };
 						        cmd.ExecuteCmd(2, cmds);
 						    }
+						}
+
+						if (ImGui::Button(__("DUMP PROCESS"), ImVec2(ImGui::GetContentRegionAvail().x, 0)))
+						{
+							DumpStructs();
+							DumpCommands();
+							DumpCVARS();
+							DumpClasses();
 						}
 
 						ImGui::SeparatorText(__("CARGO SETTINGS"));

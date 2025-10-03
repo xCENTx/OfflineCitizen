@@ -434,6 +434,11 @@ void initHooks()
 	if (!memory::Patch(GetAddr(StarCitizen::Offsets::oDisableCrashDumps), patch))
 		return;
 
+	/* BYPASS PU CHECKPOINT */
+	patch = { 0x74, 0x74 };
+	if (!memory::Patch(GetAddr(StarCitizen::Offsets::oBypassPUCheckpoint), patch))
+		return;
+
 	/* PATCH EAC DISCIPLINE SERVICE */
 	bool bHooked = memory::hooker::Create(
 		(void*)GetAddr(StarCitizen::Offsets::oEAC_HandleDiscipline),
