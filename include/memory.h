@@ -3,6 +3,16 @@
 class memory
 {
 public:
+	enum class EMEM_ASM_TYPE : int
+	{
+		NONE = 0,
+		MOV = 1,
+		CALL = 2,
+		LEA = 3,
+		CMP = 4,
+	};
+
+public:
 	explicit memory() = default;
 	~memory() = default;
 
@@ -40,6 +50,8 @@ public:
 	static bool Write(const unsigned __int64& addr, const T& value) { (T*)addr = value; }
 
 	static bool Patch(const unsigned __int64& addr, const std::vector<unsigned char>& patch);
+
+	static uintptr_t PatternScan(const uintptr_t& dwModule, const char* Signature, const bool& bRelative, const int& spacing, const EMEM_ASM_TYPE& iType = EMEM_ASM_TYPE::NONE);
 
 public:
 	struct hooker
