@@ -429,25 +429,69 @@ void initConsole()
 // @todo: relocate
 void initHooks()
 {
+	bool bHooked{ false };
 
-	std::vector<unsigned char> patch = { 0x90, 0xE9 };
-	if (!memory::Patch(GetAddr(StarCitizen::Offsets::oDisableCrashDumps), patch))
-		return;
+	/* DISABLE CRASH DUMPS */
+	{
+		//	StarCitizen::Offsets::oDisableCrashDumps = memory::PatternScan(
+		//		reinterpret_cast<long long>(GetCurrentProcess()),
+		//		__("BA ? ? ? ? 48 8D 0D ? ? ? ? E8 ? ? ? ? 85 C0"),
+		//		true, 0, memory::EMEM_ASM_TYPE::NONE);
+		//	if (!StarCitizen::Offsets::oDisableCrashDumps)
+		//	{
+		//		MessageBoxA(0, __("Failed to locate 'oDisableCrashDumps' pattern."), __("PatternScan Error"), MB_OK | MB_ICONERROR);
+		//		return;
+		//	}
+
+		std::vector<unsigned char> patch = { 0x90, 0xE9 };
+		if (!memory::Patch(GetAddr(StarCitizen::Offsets::oDisableCrashDumps), patch))
+			return;
+	}
 
 	/* BYPASS PU CHECKPOINT */
-	patch = { 0x74, 0x74 };
-	if (!memory::Patch(GetAddr(StarCitizen::Offsets::oBypassPUCheckpoint), patch))
-		return;
+	{
+		//	StarCitizen::Offsets::oBypassPUCheckpoint = memory::PatternScan(
+		//		reinterpret_cast<long long>(GetCurrentProcess()),
+		//		__("75 ? 48 8D 55 ? 4C 89 65 ? 4C 89 65 ? E8 ? ? ? ? 48 8B 0D ? ? ? ? 48 85 C9 74 ? 48 8B 01 FF 90 ? ? ? ? 48 85 C0 74 ? 48 8B 0D ? ? ? ? 48 8B 01 FF 90 ? ? ? ? 48 8B C8 48 8D 55 ? 48 8B 00 FF 10 48 8B C8 48 85 C0 74 ? 48 8B 00 EB ? 49 8B C4 EB ? 48 8B 5D ? 48 8D 53 ? E8 ? ? ? ? 48 8B 4B ? 48 8B 01 FF 10 48 8B 1D"),
+		//		true, 0, memory::EMEM_ASM_TYPE::NONE);
+		//	if (!StarCitizen::Offsets::oBypassPUCheckpoint)
+		//	{
+		//		MessageBoxA(0, __("Failed to locate 'oBypassPUCheckpoint' pattern."), __("PatternScan Error"), MB_OK | MB_ICONERROR);
+		//		return;
+		//	}
+		std::vector<unsigned char> patch = { 0x74, 0x74 };
+		if (!memory::Patch(GetAddr(StarCitizen::Offsets::oBypassPUCheckpoint), patch))
+			return;
+	}
 
 	/* PATCH EAC DISCIPLINE SERVICE */
-	bool bHooked = memory::hooker::Create(
-		(void*)GetAddr(StarCitizen::Offsets::oEAC_HandleDiscipline),
-		(void**)&StarCitizen::Functions::EAC_HandleDiscipline_stub,
-		(void*)StarCitizen::Hooks::EAC_HandleDiscipline_hook
-	);
+	{
+		//	StarCitizen::Offsets::oEAC_HandleDiscipline = memory::PatternScan(
+		//		reinterpret_cast<long long>(GetCurrentProcess()),
+		//		__("E8 ? ? ? ? 40 88 B7 ? ? ? ? 48 8B CF"),
+		//		true, 0, memory::EMEM_ASM_TYPE::CALL);
+		//	if (!StarCitizen::Offsets::oEAC_HandleDiscipline)
+		//	{
+		//		MessageBoxA(0, __("Failed to locate 'oEAC_HandleDiscipline' pattern."), __("PatternScan Error"), MB_OK | MB_ICONERROR);
+		//		return;
+		//	}
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oEAC_HandleDiscipline),
+			(void**)&StarCitizen::Functions::EAC_HandleDiscipline_stub,
+			(void*)StarCitizen::Hooks::EAC_HandleDiscipline_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- EAC::HandleDiscipline.\n");
+#endif
+	}
 
 	/* CVARS & COMMANDS */
 	{
+		//	StarCitizen::Offsets::oCXConsole_RegisterCvar_Int = memory::PatternScan(
+		//		reinterpret_cast<long long>(GetCurrentProcess()),
+		//		__("48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B B1 ? ? ? ? 45 8B F9"),
+		//		true, 0, memory::EMEM_ASM_TYPE::CALL);
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCXConsole_RegisterCvar_Int),
 			(void**)&StarCitizen::Functions::CXConsole_RegisterCvar_Int_stub,
@@ -525,6 +569,7 @@ void initHooks()
 #endif
 	}
 
+	/* CSYSTEM */
 	{
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Update),
@@ -538,6 +583,12 @@ void initHooks()
 	}
 
 	{
+
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCXCommand_MegaMap),
+			(void**)&StarCitizen::Functions::CXCommand_MegaMap_stub,
+			(void*)StarCitizen::Hooks::CXCommand_MegaMap_hook
+		);
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCXCommand_LoadMegaMap),
 			(void**)&StarCitizen::Functions::CXCommand_LoadMegaMap_stub,
