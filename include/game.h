@@ -371,37 +371,41 @@ namespace StarCitizen
 		*/
 
 		/* patches */
-		inline constexpr auto oDisableCrashDumps = 0x78B50CE;						//	mov     edx, 0A000h     ; dwFlags	|	BA ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0
+		inline auto oDisableCrashDumps = 0x78B669E;						//	mov     edx, 0A000h     ; dwFlags	|	BA ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0
 
 		/* static pointers */
-		inline constexpr auto gEnv = 0x9F98E40;										//	
-		inline constexpr auto gGoToPointMan = 0xA27BC28;							//	E8 ? ? ? ? 48 8B F8 48 8B 0E 4C 8B 41 ? 41 8D 55 or "Found goto point named %s"
+		inline constexpr auto gEnv = 0x9F99E40;										//	
+		inline constexpr auto gGoToPointMan = 0xA27CC28;							//	E8 ? ? ? ? 48 8B F8 48 8B 0E 4C 8B 41 ? 41 8D 55 or "Found goto point named %s"
 		
 		/* EAC */
-		inline constexpr auto oEAC_HandleDiscipline = 0x6806DF0;					//	"HandleEACResult GlobalGameUI"	| E8 ? ? ? ? C6 87 ? ? ? ? ? 48 8B CF E8 ? ? ? ? 8B D8
-		inline constexpr auto oBypassPUCheckpoint = 0x24EB9D3;						//	.text:00000001424EB9D3                 jnz     short loc_1424EBA2E	|	"Change Server Start" | "IsShardPersisted[$$] IsServer[$$] IsMultiplayer[$$]"
+		inline auto oEAC_HandleDiscipline = 0x6807CD0;					//	"HandleEACResult GlobalGameUI"	| E8 ? ? ? ? C6 87 ? ? ? ? ? 48 8B CF E8 ? ? ? ? 8B D8
+		inline auto oBypassPUCheckpoint = 0x24EB5D3;						//	.text:00000001424EB9D3                 jnz     short loc_1424EBA2E	|	"Change Server Start" | "IsShardPersisted[$$] IsServer[$$] IsMultiplayer[$$]"
 
 
 		/* CXConsole */
-		inline constexpr auto oCXConsole_RegisterCvar_Int = 0x79175C0;				//	"[CVARS]: [DUPLICATE] CXConsole::Register(int): variable [%s] is already registered"								
-		inline constexpr auto oCXConsole_RegisterCvar_Float = 0x7917700;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(float): variable [%s] is already registered"						
-		inline constexpr auto oCXConsole_RegisterCvar_String = 0x7917850;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(const char*): variable [%s] is already registered"								
-		inline constexpr auto oCXConsole_RegisterCvar_Int64 = 0x79179A0;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(int64): variable [%s] is already registered"								
-		inline constexpr auto oCXConsole_AddCommand = 0x78AB8C0;					//	"[CVARS]: [DUPLICATE] CXConsole::AddCommand(): console command [%s] is already registered"						
-		inline constexpr auto oCXConsole_GetCommand = 0x78E4390;					//	"GetConsoleCommand(\"%s\") called"	
-		inline constexpr auto oCXConsole_GetCVar = 0x78E4000;						//	"GetCVar(\"%s\") called"
+		inline auto oCXConsole_RegisterCvar_Int = 0x7918B90;				//	"[CVARS]: [DUPLICATE] CXConsole::Register(int): variable [%s] is already registered"								
+		inline auto oCXConsole_RegisterCvar_Float = 0x7918CD0;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(float): variable [%s] is already registered"						
+		inline auto oCXConsole_RegisterCvar_String = 0x7918E20;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(const char*): variable [%s] is already registered"								
+		inline auto oCXConsole_RegisterCvar_Int64 = 0x7918F70;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(int64): variable [%s] is already registered"								
+		inline auto oCXConsole_AddCommand = 0x78ACE90;					//	"[CVARS]: [DUPLICATE] CXConsole::AddCommand(): console command [%s] is already registered"						
+		inline auto oCXConsole_GetCommand = 0x78E5960;					//	"GetConsoleCommand(\"%s\") called"	
+		inline auto oCXConsole_GetCVar = 0x78E55D0;						//	"GetCVar(\"%s\") called"
+		
+		/* CXCommands */
+		inline constexpr auto oCXCommand_MegaMap = 0x26BB3D0;	//	"Load a map, same usage as 'megamap' cvar."
+		inline constexpr auto oCXCommand_LoadMegaMap = 0x26BAE40;	// called via MegaMap ; x__LoadMegaMap(qword_14A21FBB0, v3, (const char *)&szString); ; "Requesting game mode %s/%s"
 
 		/* CDataCore */
-		inline constexpr auto oCDataCore_RegisterStruct = 0x77FC2B0;				//	"[DataCore] RegisterStruct: Attempt to register '%s' multiple times"												
-		inline constexpr auto oCDataCore_GetStructDataFields = 0x77DE9D0;			//	"CDataCore::GetStructDataFields - [%s] has no DCStructDesc"															
+		inline auto oCDataCore_RegisterStruct = 0x77FD880;				//	"[DataCore] RegisterStruct: Attempt to register '%s' multiple times"												
+		inline auto oCDataCore_GetStructDataFields = 0x77DFFA0;			//	"CDataCore::GetStructDataFields - [%s] has no DCStructDesc"															
 
 		/* CEntityClassRegistry */
-		inline constexpr auto oCEntityClassRegistry_RegisterClass = 0x6EA1D80;		//	"CEntityClassRegistry::RegisterClass"	|	@NOTE: Must be called from game thread								
-		inline constexpr auto oCEntityClassRegistry_FindClass = 0x6E7E530;			//	"CEntityClassRegistry::FindClass"	2nd xref	|	@NOTE: Must be called from game thread		
+		inline auto oCEntityClassRegistry_RegisterClass = 0x6EA2BA0;		//	"CEntityClassRegistry::RegisterClass"	|	@NOTE: Must be called from game thread								
+		inline auto oCEntityClassRegistry_FindClass = 0x6E7F350;			//	"CEntityClassRegistry::FindClass"	2nd xref	|	@NOTE: Must be called from game thread		
 
 		/* CSystem */
-		inline constexpr auto oCSystem_Update = 0x7927FE0;							//	"CSystem::Update"	: "ICharacterManager::Update()"
-		inline constexpr auto oCSystem_Init = 0x78EE300;							//	"CSystem::Init"	
+		inline auto oCSystem_Update = 0x79295B0;							//	"CSystem::Update"	: "ICharacterManager::Update()"
+		inline auto oCSystem_Init = 0x78EF8D0;							//	"CSystem::Init"	
 
 		/* C3DEngine */
 		inline constexpr auto oC3DEngine_RenderWorld = 0x727AFC0;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
@@ -478,10 +482,6 @@ namespace StarCitizen
 		inline constexpr auto oCSCItemMiningController_UpdateLaserThrottle = 0x33EB2B0;		//	E8 ? ? ? ? 48 81 C4 ? ? ? ? C3 CC CC CC CC CC CC CC CC CC CC CC CC CC CC 48 89 54 24 ? 48 89 4C 24 ? 48 81 EC ? ? ? ? 48 8B 84 24 ? ? ? ? 0F B6 80 [2nd xRef]
 		inline constexpr auto oCEntityComponentMinable_OnHitByMiningLaser = 0x3C4AF60;		// "CEntityComponentMineable::OnHitByMiningLaser" : E8 ? ? ? ? 0F B6 C0 85 C0 75 ? 48 8B 8C 24 ? ? ? ? E8 ? ? ? ? 48 83 C0 [this]
 		inline constexpr auto oFractureMineable = 0x3C8D6E0;								//	44 89 44 24 ? 48 89 54 24 ? 48 89 4C 24 ? 48 81 EC ? ? ? ? 41 B0 [this]
-		
-		/* CXCommands */
-		inline constexpr auto oCXCommand_MegaMap = 0x26BB7D0;	//	"Load a map, same usage as 'megamap' cvar."
-		inline constexpr auto oCXCommand_LoadMegaMap = 0x26BB240;	// called via MegaMap ; x__LoadMegaMap(qword_14A21FBB0, v3, (const char *)&szString); ; "Requesting game mode %s/%s"
 
 		/* damage events */
 		inline constexpr auto oCGameRulesSCDamageHandling_OnHit = 0x4FD4BA0; //	"CGameRulesSCDamageHandling::OnHit"

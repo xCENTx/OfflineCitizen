@@ -2038,6 +2038,14 @@ namespace StarCitizen
 
 		void __fastcall CXCommand_LoadMegaMap_hook(__int64 a1, const char* a2, const char* a3)
 		{
+			static bool bFirstTime = true;
+
+			/* Main Menu: Frontend_Main , SC_Frontend */
+			if (bFirstTime && a2 && a3 && !strcmp(a2, __("Frontend_Main")) && !strcmp(a3, __("SC_Frontend")))
+			{
+				bFirstTime ^= 1; // only once
+				return Functions::CXCommand_LoadMegaMap_stub(a1, __("PU"), __("SC_Default")); // Mode , Rules
+			}
 
 			return Functions::CXCommand_LoadMegaMap_stub(a1, a2, a3);
 		}
