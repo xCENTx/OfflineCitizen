@@ -88,6 +88,65 @@ bool memory::Patch(const unsigned __int64& addr, const std::vector<unsigned char
 	return VirtualProtect(reinterpret_cast<void*>(addr), size, oldprotect, &oldprotect) != 0;
 }
 
+uintptr_t memory::PatternScan(const uintptr_t& dwModule, const char* Signature, const bool& bRelative, const int& spacing, const EMEM_ASM_TYPE& iType)
+{
+	auto pattern_to_byte = [](const char* pattern) {
+		auto bytes = std::vector<int>{};
+		const auto start = const_cast<char*>(pattern);
+		const auto end = const_cast<char*>(pattern) + strlen(pattern);
+
+		for (auto current = start; current < end; ++current) {
+			if (*current == '?') {
+				++current;
+				bytes.push_back(-1);
+			}
+			else {
+				bytes.push_back(strtoul(current, &current, 16));
+			}
+		}
+		return bytes;
+		};
+
+	const auto dos_header = reinterpret_cast<PIMAGE_DOS_HEADER>(dwModule);
+	const auto nt_headers = reinterpret_cast<PIMAGE_NT_HEADERS>(reinterpret_cast<std::uint8_t*>(dwModule) + dos_header->e_lfanew);
+
+	const auto size_of_image = nt_headers->OptionalHeader.SizeOfImage;
+	const auto pattern_bytes = pattern_to_byte(Signature);
+	const auto scan_bytes = reinterpret_cast<std::uint8_t*>(dwModule);
+
+	const auto s = pattern_bytes.size();
+	const auto d = pattern_bytes.data();
+
+	for (auto i = 0ul; i < size_of_image - s; ++i) {
+		bool found = true;
+		for (auto j = 0ul; j < s; ++j) {
+			if (scan_bytes[i + j] != d[j] && d[j] != -1) {
+				found = false;
+				break;
+			}
+		}
+
+		if (found)
+		{
+			auto address = reinterpret_cast<uintptr_t>(&scan_bytes[i]);
+
+			if (spacing != NULL)
+				address += spacing;
+
+			switch (iType)
+			{
+				case EMEM_ASM_TYPE::NONE: { return address; }
+				case EMEM_ASM_TYPE::MOV: { const auto offset = *reinterpret_cast<int*>(address + 3); return bRelative ? address + offset + 7 : address; }
+				case EMEM_ASM_TYPE::CALL: { const auto offset = *reinterpret_cast<int*>(address + 1); return bRelative ? address + offset + 5 : address; }
+				case EMEM_ASM_TYPE::LEA: { const auto offset = *reinterpret_cast<int*>(address + 3); return bRelative ? address + offset + 7 : address; }
+				case EMEM_ASM_TYPE::CMP: { const auto offset = *reinterpret_cast<int*>(address + 2); return bRelative ? address + offset + 6 : address; }
+			}
+		}
+	}
+
+	return 0;
+}
+
 bool memory::hooker::Create(void* pTarget, void** Original, void* Function)
 {
 	HK_ASSERT;
