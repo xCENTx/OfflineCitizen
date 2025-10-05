@@ -8,7 +8,6 @@
 
 
 //	fwd
-static gui g_gui;
 static int LastTick = 0;
 static bool bKeyTimer = false;
 static const char* wndwTitle = __("StarCitizen ");
@@ -652,8 +651,6 @@ void initHooks()
 #endif
 	}
 
-	return;
-
 	/* RENDERING */
 	{
 		bHooked = memory::hooker::Create(
@@ -678,6 +675,22 @@ void initHooks()
 			printf("- C3DEngine::RenderWorld\n");
 #endif
 	}
+
+	/* FLUSH MESSAGES */
+	{
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCRenderer_FlushTextMessages),
+			(void**)&StarCitizen::Functions::CRenderer_FlushTextMessages_stub,
+			(void*)StarCitizen::Hooks::CRenderer_FlushTextMessages_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CRenderer::FlushTextMessages_hook\n");
+#endif // _DEBUG
+	}
+
+	return;
+
 
 	{
 		bHooked = memory::hooker::Create(
@@ -826,19 +839,6 @@ void initHooks()
 #if _DEBUG
 		if (!bHooked)
 			printf("- CGameRulesSCDamageHandling::OnHit_hook\n");
-#endif // _DEBUG
-	}
-
-	/* FLUSH MESSAGES */
-	{
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCRenderer_FlushTextMessages),
-			(void**)&StarCitizen::Functions::CRenderer_FlushTextMessages_stub,
-			(void*)StarCitizen::Hooks::CRenderer_FlushTextMessages_hook
-		);
-#if _DEBUG
-		if (!bHooked)
-			printf("- CRenderer::FlushTextMessages_hook\n");
 #endif // _DEBUG
 	}
 
