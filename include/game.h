@@ -403,57 +403,57 @@ namespace StarCitizen
 		inline auto oCEntityClassRegistry_RegisterClass = 0x6EA2BA0;		//	"CEntityClassRegistry::RegisterClass"	|	@NOTE: Must be called from game thread								
 		inline auto oCEntityClassRegistry_FindClass = 0x6E7F350;			//	"CEntityClassRegistry::FindClass"	2nd xref	|	@NOTE: Must be called from game thread		
 
+		/* CGoToPointManager */
+		inline constexpr auto oCGoToPointManager_GetGoToPointByName = 0x3F677E0;	//	"CGoToPointsManager::GetPointByName"
+
 		/* CSystem */
 		inline auto oCSystem_Update = 0x79295B0;							//	"CSystem::Update"	: "ICharacterManager::Update()"
 		inline auto oCSystem_Init = 0x78EF8D0;							//	"CSystem::Init"	
 
 		/* C3DEngine */
-		inline constexpr auto oC3DEngine_RenderWorld = 0x727AFC0;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
+		inline constexpr auto oC3DEngine_RenderWorld = 0x767C690;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
 
 		/* CRenderer */
-		inline constexpr auto oCRenderer_MTUpdate = 0x0977190;						//	"CRenderer::MT_Update" VFIndex = 7
-		inline constexpr auto oCRenderer_ProjectToScreen = 0x097A990;				//	VFIndex = 66
-		inline constexpr auto oCRenderer_DrawText = 0x0961300;						//	VFIndex = 169
-		inline constexpr auto oCRenderer_DrawText2 = 0x0961540;						//	VFIndex = 170
-		inline constexpr auto oCRenderer_DrawTextArgs = 0x09613E0;					//	VFIndex = 171
-		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x09615E0;					//	VFIndex = 172
-		inline constexpr auto oCRenderer_FlushTextMessages = 0x097E650;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
-
-		/* CGoToPointManager */
-		inline constexpr auto oCGoToPointManager_GetGoToPointByName = 0x3C12710;	//	"CGoToPointsManager::GetPointByName"
+		inline constexpr auto oCRenderer_MTUpdate = 0x098D100;						//	"CRenderer::MT_Update" VFIndex = 7
+		inline constexpr auto oCRenderer_ProjectToScreen = 0x0990960;				//	VFIndex = 66
+		inline constexpr auto oCRenderer_DrawText = 0x09774A0;						//	VFIndex = 169
+		inline constexpr auto oCRenderer_DrawText2 = 0x09776E0;						//	VFIndex = 170
+		inline constexpr auto oCRenderer_DrawTextArgs = 0x0977580;					//	VFIndex = 171
+		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x0977780;					//	VFIndex = 172
+		inline constexpr auto oCRenderer_FlushTextMessages = 0x0994620;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
 
 		/* CCamera */
-		inline constexpr auto oCCamerViewManager_Update = 0x37ECFD0;				//	"CCameraViewManager::Update"	
+		inline constexpr auto oCCamerViewManager_Update = 0x3B27170;				//	"CCameraViewManager::Update"	
 
 		/* CSCLocalPlayerMovement */
 		inline constexpr auto oCSCLocalPlayerMovement_Update = 0x4A1C3E0;			//  E8 ? ? ? ? C5 FA 5F FE ; grab the additive as well	; [4.0.1d]
 
 		/* CEntity */
-		inline constexpr auto oCEntity_Init = 0x6A97C20;							//	"Entity %llu %s is being initialized from an unexpected state (%u)"
-		inline constexpr auto oCEntity_Shutdown = 0x6AB7F30;						//	"CEntity::ShutDown" or "[Entity] CEntitySystem::DeleteEntity %s %s %llu" - function call after isValid check
+		inline constexpr auto oCEntity_Init = 0x6E8EAA0;							//	"Entity %llu %s is being initialized from an unexpected state (%u)"
+		inline constexpr auto oCEntity_Shutdown = 0x6EAF760;						//	"CEntity::ShutDown" or "[Entity] CEntitySystem::DeleteEntity %s %s %llu" - function call after isValid check
 
 		/* entity helpers */
-		inline constexpr auto oIsValidEntity = 0x03102C0;							//	^ found when looking for CEntity::ShutDown	:	C5 F2 5E F0 E8 ?? ?? ?? ?? 84 C0 75 05
-		inline constexpr auto oGetRenderProxy = 0x033BF70;							//	E8 ?? ?? ?? ?? 48 8B 0F 48 89 4B 10 : "IEntityRenderProxy"
-		inline constexpr auto oIsValidRenderProxy = 0x0381750;						//	xref GetRenderProxy , is generally the following call
+		inline constexpr auto oIsValidEntity = 0x0317A90;							//	^ found when looking for CEntity::ShutDown	:	C5 F2 5E F0 E8 ?? ?? ?? ?? 84 C0 75 05 ; is_valid_handle_typeB
+		inline constexpr auto oGetRenderProxy = 0x03439B0;							//	E8 ?? ?? ?? ?? 48 8B 0F 48 89 4B 10 : "IEntityRenderProxy"
+		inline constexpr auto oIsValidRenderProxy = 0x038B430;						//	xref GetRenderProxy , is generally the following call ; AssetMeta::HasActorSubresource
 
 		/* CEntitySystem */
-		inline constexpr auto oCEntitySystem_Update = 0x6ABBF80;					//	"CEntitySystem::Update"
-		inline constexpr auto oCEntitySystem_SpawnEntity = 0x6AB86F0;				//	"CEntitySystem::SpawnEntityImpl"
-		inline constexpr auto oCEntitySystem_DeleteEntity = 0x6A7FF10;				//	"CEntitySystem::DeleteEntity"
-		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6A8DD30;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
+		inline constexpr auto oCEntitySystem_Update = 0x6EB3980;					//	"CEntitySystem::Update"
+		inline constexpr auto oCEntitySystem_SpawnEntity = 0x6EB0030;				//	"CEntitySystem::SpawnEntityImpl"
+		inline constexpr auto oCEntitySystem_DeleteEntity = 0x6E768C0;				//	"CEntitySystem::DeleteEntity"
+		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6E84B10;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
 
 		/* CRenderProxy */
-		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x69FB280;				//	"CRenderProxy::GetLocalBounds" 2nd xref
-		inline constexpr auto oCActor_GetBoneTransform = 0x651D460;					//	"CSCActorResultAdditiveStateDematerialize::SpawnEffectAtBone" around Ln. 30 ; [4.0.1d]							
+		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x6DF2940;				//	"CRenderProxy::GetLocalBounds" 2nd xref
+		inline constexpr auto oCActor_GetBoneTransform = 0x68E6B60;					//	"CSCActorResultAdditiveStateDematerialize::SpawnEffectAtBone" around Ln. 30 ; [4.0.1d]							
 
 		/* */
 		inline constexpr auto oCRigidEntity_VerifyExistingContacts = 0x68066C0;		//	"CRigidEntity::VerifyExistingContacts"
 
 		/* [DEV] Fly Mode Command */
-		inline constexpr auto oGetIActor = 0x6541BD0;								//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
-		inline constexpr auto oCCharacterStateHiearchy_SetState = 0x5A301D0;		//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
-		inline constexpr auto oCCharacterStateHiearchy_VerifyState = 0x4D6C430;		//		"FlyMode/NoClip ON"
+		inline constexpr auto oGetIActor = 0x690C070;								//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
+		inline constexpr auto oCCharacterStateHiearchy_SetState = 0x5DE8660;		//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
+		inline constexpr auto oCCharacterStateHiearchy_VerifyState = 0x510F160;		//		"FlyMode/NoClip ON"
 
 		/* Weapon and Equipment params */
 		inline constexpr auto oCSCAmmoContainerComponent_GetAmmoCount = 0x59290C0;	//		"Weapon::CAmmoContainerComponent::GetAmmoCount" - "Weapon::Action::SWeaponActionFireSingleState" analyze vfTable between __StarEngineModule__ calls

@@ -137,9 +137,9 @@ namespace StarCitizen
 		/* VTABLE INDICES */
 #define vft_MT_GetDisplayWidth 0x178			//	CRenderer::MT_GetDisplayWidth
 #define vft_MT_GetDisplayHeight 0x180			//	CRenderer::MT_GetDisplayHeight
-#define vft_Actor_SetHealth 0x570				//	CActorComponent::SetHealth
-#define vft_Actor_GetHealth 0x578				//	CActorComponent::GetHealth
-#define vft_Actor_GetMaxHealth 	0x588			//	CActorComponent::GetMaxHealth
+#define vft_Actor_SetHealth 0x6E8 				//	CActorComponent::SetHealth
+#define vft_Actor_GetHealth 0x6F0 				//	CActorComponent::GetHealth	// CFlowActorGetHealth - No Entity or Entity not an Actor!
+#define vft_Actor_GetMaxHealth 	0x700 			//	CActorComponent::GetMaxHealth
 #define vft_DataCore_GetDataFields 0x58			//	CDataCore::GetStructDataFields
 
 		/* OFFSETS */
@@ -273,7 +273,7 @@ namespace StarCitizen
 				}
 				else
 					printf(__("[!] Failed to find go to point % s\n"), vars::goto_TargetName.c_str());
-
+			
 				vars::goto_bFindPoint = false;
 				vars::goto_TargetName.clear();
 			}
@@ -282,76 +282,76 @@ namespace StarCitizen
 			if (vars::cmd_bExec)
 			{
 				vars::cmd_bExec = false;
-
+			
 				Hooks::vars::cmd_selection.ExecuteCmd(Hooks::vars::cmd_count, Hooks::vars::cmd_args);
-
+			
 				/* reset for next command */
 				Hooks::vars::cmd_count = 1;
 				memset(Hooks::vars::cmd_args, 0, sizeof(Hooks::vars::cmd_args));
 			}
-
-			/* heal local player */
-			if (vars::cheat_bHealSelf || vars::cheat_bAutoHeal)
-			{
-				vars::cheat_bHealSelf = false;
-				auto pLocalEntity = Helpers::GetLocalPlayerEntity();
-				if (pLocalEntity)
-				{
-					float newHealth = 0.0f;
-
-					/* auto heal local player */
-					if (vars::cheat_bAutoHeal)
-						newHealth = Helpers::GetEntityHealth(pLocalEntity);
-					else
-						newHealth = Helpers::GetEntityMaxHealth(pLocalEntity);
-
-					Helpers::SetEntityHealth(pLocalEntity, newHealth);
-				}
-			}
-
-			/* kill local player */
-			if (vars::cheat_bKillSelf)
-			{
-
-				vars::cheat_bKillSelf = false;
-				auto pLocalEntity = Helpers::GetLocalPlayerEntity();
-				if (pLocalEntity)
-				{
-					Helpers::SetEntityHealth(pLocalEntity, Helpers::GetEntityMaxHealth(pLocalEntity) * 0.f);
-
-
-					//	const auto& pComponents = CleanPointer<Classes::IEntityComponents*>(pLocalEntity->pComponents);
-					//	if (pComponents)					{
-					//	
-					//	
-					//		const auto& pActorComponent = CleanPointer<Classes::CSCActorComponent*>(pComponents->pActorComponent);
-					//		const auto& pHealthComponent = CleanPointer<Classes::CSCBodyHealthComponent*>(pComponents->pHealthComponent);
-					//		if (pActorComponent && pHealthComponent)
-					//	
-					//		{
-					//			//	Functions::CSCBodyHealthComponent_ApplyHealthChange(
-					//			//		(__int64)pHealthComponent,
-					//			//		0.f,
-					//			//		(__int64)pLocalEntity,
-					//			//		0
-					//			//	);
-					//	
-					//			//	Functions::CSCBodyHealthComponent_AuthorityRequestHit(
-					//			//		(__int64)pHealthComponent, 
-					//			//		(__int64)pLocalEntity, 
-					//			//		135.0f
-					//			//	);
-					//	
-					//			//	CallVFunction<__int64>(pActorComponent, vft_Actor_SetHealth / 8, 0.f);
-					//		}
-					//	
-					//	}
-				}
-			}
-
-
-			if (vars::cheat_bSpaceBrake)
-				Thread::SpaceShipHandbrake();
+			
+			//	/* heal local player */
+			//	if (vars::cheat_bHealSelf || vars::cheat_bAutoHeal)
+			//	{
+			//		vars::cheat_bHealSelf = false;
+			//		auto pLocalEntity = Helpers::GetLocalPlayerEntity();
+			//		if (pLocalEntity)
+			//		{
+			//			float newHealth = 0.0f;
+			//	
+			//			/* auto heal local player */
+			//			if (vars::cheat_bAutoHeal)
+			//				newHealth = Helpers::GetEntityHealth(pLocalEntity);
+			//			else
+			//				newHealth = Helpers::GetEntityMaxHealth(pLocalEntity);
+			//	
+			//			Helpers::SetEntityHealth(pLocalEntity, newHealth);
+			//		}
+			//	}
+			//	
+			//	/* kill local player */
+			//	if (vars::cheat_bKillSelf)
+			//	{
+			//	
+			//		vars::cheat_bKillSelf = false;
+			//		auto pLocalEntity = Helpers::GetLocalPlayerEntity();
+			//		if (pLocalEntity)
+			//		{
+			//			Helpers::SetEntityHealth(pLocalEntity, Helpers::GetEntityMaxHealth(pLocalEntity) * 0.f);
+			//	
+			//	
+			//			//	const auto& pComponents = CleanPointer<Classes::IEntityComponents*>(pLocalEntity->pComponents);
+			//			//	if (pComponents)					{
+			//			//	
+			//			//	
+			//			//		const auto& pActorComponent = CleanPointer<Classes::CSCActorComponent*>(pComponents->pActorComponent);
+			//			//		const auto& pHealthComponent = CleanPointer<Classes::CSCBodyHealthComponent*>(pComponents->pHealthComponent);
+			//			//		if (pActorComponent && pHealthComponent)
+			//			//	
+			//			//		{
+			//			//			//	Functions::CSCBodyHealthComponent_ApplyHealthChange(
+			//			//			//		(__int64)pHealthComponent,
+			//			//			//		0.f,
+			//			//			//		(__int64)pLocalEntity,
+			//			//			//		0
+			//			//			//	);
+			//			//	
+			//			//			//	Functions::CSCBodyHealthComponent_AuthorityRequestHit(
+			//			//			//		(__int64)pHealthComponent, 
+			//			//			//		(__int64)pLocalEntity, 
+			//			//			//		135.0f
+			//			//			//	);
+			//			//	
+			//			//			//	CallVFunction<__int64>(pActorComponent, vft_Actor_SetHealth / 8, 0.f);
+			//			//		}
+			//			//	
+			//			//	}
+			//		}
+			//	}
+			//	
+			//	
+			//	if (vars::cheat_bSpaceBrake)
+			//		Thread::SpaceShipHandbrake();
 
 			/* do ufo mode */
 			if (vars::cheat_bUFO)
@@ -361,30 +361,30 @@ namespace StarCitizen
 				else
 					Thread::SHIP_UFO(vars::mUFOSpeedScalar);
 			}
-
-			/* auto destroy mineable */
-			if (vars::cheat_mining_mFlag)
-			{
-				const long long success = 0xB700000000;
-				vars::cheat_mining_mFlag = false;
-				vars::cheat_mining_bAutoFracture = false;
-
-				Functions::FractureMineable_stub(vars::cheat_mining_pMineable, (__int64)&success, 1);
-			}
-
-			if (vars::datacore_bFindInstance && !vars::datacore_TargetName.empty())
-			{
-				vars::datacore_bFindInstance ^= 1;
-				if (const auto& pInstance = Helpers::datacore::GetStructInstance(vars::datacore_TargetName))
-					Helpers::CopyToClipboard(__("%s: 0x%llX"), vars::datacore_TargetName.c_str(), pInstance);
-				
-				vars::datacore_TargetName.clear();
-
-				//	const auto& pMiningGlobalParams = Helpers::datacore::GetStructInstance("MiningGlobalParams.MiningGlobalParams");
-				//	const auto& pGlobalSalvageRepairParams = Helpers::datacore::GetStructInstance("SGlobalSalvageRepairBeamParams.SGlobalSalvageRepairBeamParams");
-				//	printf("MiningGlobalParams: 0x%llX\n", pMiningGlobalParams);
-				//	printf("SGlobalSalvageRepairBeamParams: 0x%llX\n", pGlobalSalvageRepairParams);
-			}
+			
+			//	/* auto destroy mineable */
+			//	if (vars::cheat_mining_mFlag)
+			//	{
+			//		const long long success = 0xB700000000;
+			//		vars::cheat_mining_mFlag = false;
+			//		vars::cheat_mining_bAutoFracture = false;
+			//	
+			//		Functions::FractureMineable_stub(vars::cheat_mining_pMineable, (__int64)&success, 1);
+			//	}
+			//	
+			//	if (vars::datacore_bFindInstance && !vars::datacore_TargetName.empty())
+			//	{
+			//		vars::datacore_bFindInstance ^= 1;
+			//		if (const auto& pInstance = Helpers::datacore::GetStructInstance(vars::datacore_TargetName))
+			//			Helpers::CopyToClipboard(__("%s: 0x%llX"), vars::datacore_TargetName.c_str(), pInstance);
+			//		
+			//		vars::datacore_TargetName.clear();
+			//	
+			//		//	const auto& pMiningGlobalParams = Helpers::datacore::GetStructInstance("MiningGlobalParams.MiningGlobalParams");
+			//		//	const auto& pGlobalSalvageRepairParams = Helpers::datacore::GetStructInstance("SGlobalSalvageRepairBeamParams.SGlobalSalvageRepairBeamParams");
+			//		//	printf("MiningGlobalParams: 0x%llX\n", pMiningGlobalParams);
+			//		//	printf("SGlobalSalvageRepairBeamParams: 0x%llX\n", pGlobalSalvageRepairParams);
+			//	}
 
 			return Functions::CSystem_Update_stub(a1, a2, a3);
 		}
@@ -1149,7 +1149,7 @@ namespace StarCitizen
 				vars::vAllEntities.push_back(pEntity);
 			};
 
-			if (*(BYTE*)(a1 + 0x13))	//	check state is valid
+			if (*(BYTE*)(a1 + 0xD) == 0)	//	check state is valid
 				detour(a1, a2);
 
 			return Functions::CEntity_Init_stub(a1, a2);
@@ -7057,11 +7057,14 @@ namespace StarCitizen
 					if (!pDraw)
 						return;
 
+
+					const ImVec2& posWndw = g_gui.GetCloneRect().Min;
+
 					//	if (entTM.bIsActor && health <= 0.f)
 					//		return;
 
-					ImVec2 fwd = ImVec2(entTM.originFWD.x, entTM.originFWD.y);
-					ImVec2 root = ImVec2(entTM.origin.x, entTM.origin.y);
+					ImVec2 fwd = ImVec2(entTM.originFWD.x, entTM.originFWD.y) + posWndw;
+					ImVec2 root = ImVec2(entTM.origin.x, entTM.origin.y) + posWndw;
 
 					//	Forward Projection
 					if (entTM.bOriginFWD && entTM.bOrigin)
@@ -7070,29 +7073,83 @@ namespace StarCitizen
 					//	3D Bounding Box
 					ImVec2 boxVerts[8];
 					for (int i = 0; i < 8; i++)
-						boxVerts[i] = ImVec2(entTM.boxVerts[i].x, entTM.boxVerts[i].y);
+					{
+						boxVerts[i] = ImVec2(entTM.boxVerts[i].x, entTM.boxVerts[i].y) + posWndw;
+//	#if _DEBUG
+//							gui::draw::Text(boxVerts[i], ImColor(255, 255, 255, 50), std::to_string(i).c_str(), true);
+//	#endif
+					}
 					for (int i = 0; i < 4; i++)
 					{
 						if (entTM.bBoxVerts[i] && entTM.bBoxVerts[(i + 1) % 4])
-							gui::draw::CleanLine(boxVerts[i], boxVerts[(i + 1) % 4], fwdIndex == 0 ? fwd_color : target_color, 1.f);
-
+							gui::draw::CleanLine(boxVerts[i], boxVerts[(i + 1) % 4], /*fwdIndex == 0 ? fwd_color :*/ target_color, 1.f);
+					
 						if (entTM.bBoxVerts[i + 4] && entTM.bBoxVerts[((i + 1) % 4) + 4])
-							gui::draw::CleanLine(boxVerts[i + 4], boxVerts[((i + 1) % 4) + 4], fwdIndex == 1 ? fwd_color : target_color, 1.0f);
-
+							gui::draw::CleanLine(boxVerts[i + 4], boxVerts[((i + 1) % 4) + 4], /*fwdIndex == 1 ? fwd_color :*/ target_color, 1.0f);
+					
 						if (entTM.bBoxVerts[i] && entTM.bBoxVerts[i + 4])
-							gui::draw::CleanLine(boxVerts[i], boxVerts[i + 4], fwdIndex == 2 ? fwd_color : target_color, 1.0f);
+							gui::draw::CleanLine(boxVerts[i], boxVerts[i + 4], /*fwdIndex == 2 ? fwd_color :*/ target_color, 1.0f);
 					}
-					ImVec2 bottomFaceVerts[4] = { entTM.boxVerts[0], entTM.boxVerts[1] , entTM.boxVerts[5] , entTM.boxVerts[4] };
-					ImVec2 topFaceVerts[4] = { entTM.boxVerts[3], entTM.boxVerts[2] , entTM.boxVerts[6] , entTM.boxVerts[7] };
-					ImVec2 rightFaceVerts[4] = { entTM.boxVerts[0], entTM.boxVerts[3] , entTM.boxVerts[7] , entTM.boxVerts[4] };
-					ImVec2 leftFaceVerts[4] = { entTM.boxVerts[1], entTM.boxVerts[5] , entTM.boxVerts[6] , entTM.boxVerts[2] };
-					ImVec2 frontFaceVerts[4] = { entTM.boxVerts[0], entTM.boxVerts[1] , entTM.boxVerts[2] , entTM.boxVerts[3] };
-					ImVec2 backFaceVerts[4] = { entTM.boxVerts[5], entTM.boxVerts[4] , entTM.boxVerts[7] , entTM.boxVerts[6] };
+
+
+					ImVec2 bottomFaceVerts[4]	= { boxVerts[0], boxVerts[1] , boxVerts[5] , boxVerts[4] };
+					ImVec2 topFaceVerts[4]		= { boxVerts[3], boxVerts[2] , boxVerts[6] , boxVerts[7] };
+					ImVec2 rightFaceVerts[4]	= { boxVerts[0], boxVerts[3] , boxVerts[7] , boxVerts[4] };
+					ImVec2 leftFaceVerts[4]		= { boxVerts[1], boxVerts[5] , boxVerts[6] , boxVerts[2] };
+					ImVec2 backFaceVerts[4]		= { boxVerts[0], boxVerts[1] , boxVerts[2] , boxVerts[3] }; // ~
+					ImVec2 frontFaceVerts[4]	= { boxVerts[5], boxVerts[4] , boxVerts[7] , boxVerts[6] }; // ~
+					//	for ( int i = 0; i < 4; i++)
+					//		gui::draw::CleanLine(frontFaceVerts[i], boxVerts[(i + 1) % 4], fwdIndex == 1 ? fwd_color : target_color, 1.0f);
+					//	ImVec2* faces[6] = {
+					//		bottomFaceVerts, // 0
+					//		topFaceVerts,    // 1
+					//		frontFaceVerts,  // 2
+					//		backFaceVerts,   // 3
+					//		leftFaceVerts,   // 4
+					//		rightFaceVerts   // 5
+					//	};
+					//	bool bValidBox[6] =
+					//	{
+					//		{ entTM.bBoxVerts[0] && entTM.bBoxVerts[1] && entTM.bBoxVerts[5] && entTM.bBoxVerts[4] },	
+					//		{ entTM.bBoxVerts[3] && entTM.bBoxVerts[2] && entTM.bBoxVerts[6] && entTM.bBoxVerts[7] },	
+					//		{ entTM.bBoxVerts[5] && entTM.bBoxVerts[4] && entTM.bBoxVerts[7] && entTM.bBoxVerts[6] },
+					//		{ entTM.bBoxVerts[0] && entTM.bBoxVerts[1] && entTM.bBoxVerts[2] && entTM.bBoxVerts[3] },	
+					//		{ entTM.bBoxVerts[1] && entTM.bBoxVerts[5] && entTM.bBoxVerts[6] && entTM.bBoxVerts[2] },	
+					//		{ entTM.bBoxVerts[0] && entTM.bBoxVerts[3] && entTM.bBoxVerts[7] && entTM.bBoxVerts[4] }	
+					//	};
 
 					ImColor shadedTargetColor = target_color;
+					ImColor shadedTargetFrontColor = fwd_color;
+
 					if (health > 0.f)
 						shadedTargetColor = ImColor(255 - health * 2.55, health * 2.55, 0);		//	health color
+					
 					shadedTargetColor.Value.w = target_color.Value.w * .1f;
+					shadedTargetFrontColor.Value.w = target_color.Value.w * .1f;
+					
+					//	for (int f = 0; f < 6; f++)
+					//	{
+					//		if (!bValidBox)
+					//			continue;
+					//	
+					//		ImU32 col = (f == fwdIndex) ? fwd_color : target_color;
+					//		ImU32 shadedCol = (f == fwdIndex) ? shadedTargetFrontColor : shadedTargetColor;
+					//	
+					//		// Filled shading
+					//		if (bValidBox[f])
+					//			pDraw->AddConvexPolyFilled(faces[f], 4, shadedCol);
+					//	
+					//		// Outline for clarity
+					//		for (int i = 0; i < 4; i++)
+					//		{
+					//			gui::draw::CleanLine(
+					//				faces[f][i],
+					//				faces[f][(i + 1) % 4],
+					//				col,
+					//				1.0f
+					//			);
+					//		}
+					//	}
 
 					if (entTM.bBoxVerts[0] &&
 						entTM.bBoxVerts[1] &&
@@ -7100,35 +7157,35 @@ namespace StarCitizen
 						entTM.bBoxVerts[4]
 						)
 						pDraw->AddConvexPolyFilled(bottomFaceVerts, 4, shadedTargetColor);
-
+					
 					if (entTM.bBoxVerts[3] &&
 						entTM.bBoxVerts[2] &&
 						entTM.bBoxVerts[6] &&
 						entTM.bBoxVerts[7]
 						)
 						pDraw->AddConvexPolyFilled(topFaceVerts, 4, shadedTargetColor);
-
+					
 					if (entTM.bBoxVerts[0] &&
 						entTM.bBoxVerts[3] &&
 						entTM.bBoxVerts[7] &&
 						entTM.bBoxVerts[4]
 						)
 						pDraw->AddConvexPolyFilled(rightFaceVerts, 4, shadedTargetColor);
-
+					
 					if (entTM.bBoxVerts[1] &&
 						entTM.bBoxVerts[5] &&
 						entTM.bBoxVerts[6] &&
 						entTM.bBoxVerts[2]
 						)
 						pDraw->AddConvexPolyFilled(leftFaceVerts, 4, shadedTargetColor);
-
+					
 					if (entTM.bBoxVerts[0] &&
 						entTM.bBoxVerts[1] &&
 						entTM.bBoxVerts[2] &&
 						entTM.bBoxVerts[3]
 						)
 						pDraw->AddConvexPolyFilled(frontFaceVerts, 4, shadedTargetColor);
-
+					
 					if (entTM.bBoxVerts[5] &&
 						entTM.bBoxVerts[4] &&
 						entTM.bBoxVerts[7] &&
@@ -7144,10 +7201,10 @@ namespace StarCitizen
 						{
 							ImVec2 r1{ point.x, point.y };
 							ImVec2 r2{ point.z, point.w };
-							gui::draw::CleanLine(r1, r2, target_color, 1.0f);
+							gui::draw::CleanLine(r1 + posWndw, r2 + posWndw, target_color, 1.0f);
 						}
 						if (entTM.bBoneHead)
-							gui::draw::Circle({ entTM.boneHead.x, entTM.boneHead.y }, target_color, entTM.boneHeadRadius, 1.f);
+							gui::draw::Circle(ImVec2(entTM.boneHead.x, entTM.boneHead.y) + posWndw, target_color, entTM.boneHeadRadius, 1.f);
 
 						/* HEALTH BAR */
 						//	float corner_height = abs(entTM.originTop.y - entTM.origin.y);												//	Width
@@ -7189,7 +7246,7 @@ namespace StarCitizen
 						//	ImVec2 shineEnd = ImVec2(barTopLeft.x + filledWidth - 1, barTopLeft.y + 1);
 						//	pDraw->AddLine(shineStart, shineEnd, IM_COL32(255, 255, 255, 60), 1.0f);
 					}
-				};
+				}; // end fnDrawIT
 
 
 				ImVec2 szWndw = ImGui::GetWindowSize();
@@ -7286,7 +7343,7 @@ namespace StarCitizen
 					if (Hooks::vars::grab_bEnable && Hooks::vars::grab_pEntity && it.pEntity == Hooks::vars::grab_pEntity)
 						entColor = ImColor(0.988, 0.760, 0.011, 1.0f);	//	grab color
 
-					drawIT(it.screenTM, entColor, fwd_color, it.TM.health, 1);
+					drawIT(it.screenTM, entColor, fwd_color, it.TM.health, 2);
 
 
 
@@ -7310,14 +7367,14 @@ namespace StarCitizen
 					const auto& ent = Hooks::vars::target_player;
 					const ImColor& target_color = ImColor(Hooks::vars::target_Color.x, Hooks::vars::target_Color.y, Hooks::vars::target_Color.z, Hooks::vars::target_Color.w);
 
-					drawIT(ent.screenTM, target_color, fwd_color, 1);
+					drawIT(ent.screenTM, target_color, fwd_color, 2);
 				}
 
 				/* render line to grab entity */
 				if (Hooks::vars::grab_bEnable && pClosestFovEntity)
 				{
 					Hooks::vars::grab_pEntity = pClosestFovEntity;
-					gui::draw::CleanLine(wndwCenter, mClosestTM.origin, ImColor(0.988, 0.760, 0.011, 1.0f), 1.5f);
+					gui::draw::CleanLine(wndwCenter + g_gui.GetCloneRect().Min, mClosestTM.origin, ImColor(0.988, 0.760, 0.011, 1.0f), 1.5f);
 				}
 
 				//	if (Hooks::vars::esp_bOrbit)

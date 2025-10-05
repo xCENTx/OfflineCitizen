@@ -8,7 +8,6 @@
 
 
 //	fwd
-static gui g_gui;
 static int LastTick = 0;
 static bool bKeyTimer = false;
 static const char* wndwTitle = __("StarCitizen ");
@@ -371,11 +370,12 @@ void shutdown()
 	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntityClassRegistry_RegisterClass));
 	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntityClassRegistry_FindClass));
 	memory::hooker::Remove((void*)GetAddr(Offsets::oCSystem_Update));
-	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntitySystem_SpawnEntity));
-	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntitySystem_DeleteEntity));
+	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntitySystem_Update));
+	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntity_Init));
+	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntity_Shutdown));
+	memory::hooker::Remove((void*)GetAddr(Offsets::oCCamerViewManager_Update));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCRenderer_MTUpdate));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oC3DEngine_RenderWorld));
-	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCCamerViewManager_Update));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCSCAmmoContainerComponent_GetAmmoCount));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCCharacterStateHiearchy_VerifyState));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCWeaponActionFireSalvageRepair_GetRayCastRequest));
@@ -600,8 +600,6 @@ void initHooks()
 #endif
 	}
 
-	return;
-
 	{
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCEntitySystem_Update),
@@ -641,6 +639,18 @@ void initHooks()
 #endif
 	}
 
+	{
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCCamerViewManager_Update),
+			(void**)&StarCitizen::Functions::CCamerViewManager_Update_stub,
+			(void*)StarCitizen::Hooks::CCameraViewManager_Update_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CCameraViewManager::Update\n");
+#endif
+	}
+
 	/* RENDERING */
 	{
 		bHooked = memory::hooker::Create(
@@ -666,17 +676,21 @@ void initHooks()
 #endif
 	}
 
+	/* FLUSH MESSAGES */
 	{
 		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCCamerViewManager_Update),
-			(void**)&StarCitizen::Functions::CCamerViewManager_Update_stub,
-			(void*)StarCitizen::Hooks::CCameraViewManager_Update_hook
+			(void*)GetAddr(StarCitizen::Offsets::oCRenderer_FlushTextMessages),
+			(void**)&StarCitizen::Functions::CRenderer_FlushTextMessages_stub,
+			(void*)StarCitizen::Hooks::CRenderer_FlushTextMessages_hook
 		);
 #if _DEBUG
 		if (!bHooked)
-			printf("- CCameraViewManager::Update\n");
-#endif
+			printf("- CRenderer::FlushTextMessages_hook\n");
+#endif // _DEBUG
 	}
+
+	return;
+
 
 	{
 		bHooked = memory::hooker::Create(
@@ -825,19 +839,6 @@ void initHooks()
 #if _DEBUG
 		if (!bHooked)
 			printf("- CGameRulesSCDamageHandling::OnHit_hook\n");
-#endif // _DEBUG
-	}
-
-	/* FLUSH MESSAGES */
-	{
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCRenderer_FlushTextMessages),
-			(void**)&StarCitizen::Functions::CRenderer_FlushTextMessages_stub,
-			(void*)StarCitizen::Hooks::CRenderer_FlushTextMessages_hook
-		);
-#if _DEBUG
-		if (!bHooked)
-			printf("- CRenderer::FlushTextMessages_hook\n");
 #endif // _DEBUG
 	}
 
