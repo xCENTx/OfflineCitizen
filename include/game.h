@@ -411,16 +411,16 @@ namespace StarCitizen
 		inline auto oCSystem_Init = 0x78EF8D0;							//	"CSystem::Init"	
 
 		/* C3DEngine */
-		inline constexpr auto oC3DEngine_RenderWorld = 0x727AFC0;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
+		inline constexpr auto oC3DEngine_RenderWorld = 0x767C690;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
 
 		/* CRenderer */
-		inline constexpr auto oCRenderer_MTUpdate = 0x0977190;						//	"CRenderer::MT_Update" VFIndex = 7
-		inline constexpr auto oCRenderer_ProjectToScreen = 0x097A990;				//	VFIndex = 66
-		inline constexpr auto oCRenderer_DrawText = 0x0961300;						//	VFIndex = 169
-		inline constexpr auto oCRenderer_DrawText2 = 0x0961540;						//	VFIndex = 170
-		inline constexpr auto oCRenderer_DrawTextArgs = 0x09613E0;					//	VFIndex = 171
-		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x09615E0;					//	VFIndex = 172
-		inline constexpr auto oCRenderer_FlushTextMessages = 0x097E650;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
+		inline constexpr auto oCRenderer_MTUpdate = 0x098D100;						//	"CRenderer::MT_Update" VFIndex = 7
+		inline constexpr auto oCRenderer_ProjectToScreen = 0x0990960;				//	VFIndex = 66
+		inline constexpr auto oCRenderer_DrawText = 0x09774A0;						//	VFIndex = 169
+		inline constexpr auto oCRenderer_DrawText2 = 0x09776E0;						//	VFIndex = 170
+		inline constexpr auto oCRenderer_DrawTextArgs = 0x0977580;					//	VFIndex = 171
+		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x0977780;					//	VFIndex = 172
+		inline constexpr auto oCRenderer_FlushTextMessages = 0x0994620;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
 
 		/* CCamera */
 		inline constexpr auto oCCamerViewManager_Update = 0x3B27170;				//	"CCameraViewManager::Update"	
