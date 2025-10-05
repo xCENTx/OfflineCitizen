@@ -137,9 +137,9 @@ namespace StarCitizen
 		/* VTABLE INDICES */
 #define vft_MT_GetDisplayWidth 0x178			//	CRenderer::MT_GetDisplayWidth
 #define vft_MT_GetDisplayHeight 0x180			//	CRenderer::MT_GetDisplayHeight
-#define vft_Actor_SetHealth 0x570				//	CActorComponent::SetHealth
-#define vft_Actor_GetHealth 0x578				//	CActorComponent::GetHealth
-#define vft_Actor_GetMaxHealth 	0x588			//	CActorComponent::GetMaxHealth
+#define vft_Actor_SetHealth 0x6E8 				//	CActorComponent::SetHealth
+#define vft_Actor_GetHealth 0x6F0 				//	CActorComponent::GetHealth	// CFlowActorGetHealth - No Entity or Entity not an Actor!
+#define vft_Actor_GetMaxHealth 	0x700 			//	CActorComponent::GetMaxHealth
 #define vft_DataCore_GetDataFields 0x58			//	CDataCore::GetStructDataFields
 
 		/* OFFSETS */
@@ -262,21 +262,21 @@ namespace StarCitizen
 #endif	//	dev features
 
 			/*	GO TO POINT */
-			//	if (vars::goto_bFindPoint)
-			//	{
-			//		Structs::DVector pos;
-			//		if (Helpers::GetPointByName(vars::goto_TargetName.c_str(), &pos))
-			//		{
-			//			/* set pos & enable UFO mode */
-			//			Classes::CEntity* pLocalEntity = StarCitizen::Helpers::GetLocalPlayerEntity();
-			//			Thread::LocalTeleport(pos, true);
-			//		}
-			//		else
-			//			printf(__("[!] Failed to find go to point % s\n"), vars::goto_TargetName.c_str());
-			//	
-			//		vars::goto_bFindPoint = false;
-			//		vars::goto_TargetName.clear();
-			//	}
+			if (vars::goto_bFindPoint)
+			{
+				Structs::DVector pos;
+				if (Helpers::GetPointByName(vars::goto_TargetName.c_str(), &pos))
+				{
+					/* set pos & enable UFO mode */
+					Classes::CEntity* pLocalEntity = StarCitizen::Helpers::GetLocalPlayerEntity();
+					Thread::LocalTeleport(pos, true);
+				}
+				else
+					printf(__("[!] Failed to find go to point % s\n"), vars::goto_TargetName.c_str());
+			
+				vars::goto_bFindPoint = false;
+				vars::goto_TargetName.clear();
+			}
 
 			/* COMMAND EXECUTOR */
 			if (vars::cmd_bExec)
@@ -1149,7 +1149,7 @@ namespace StarCitizen
 				vars::vAllEntities.push_back(pEntity);
 			};
 
-			if (*(BYTE*)(a1 + 0x13))	//	check state is valid
+			if (*(BYTE*)(a1 + 0xD) == 0)	//	check state is valid
 				detour(a1, a2);
 
 			return Functions::CEntity_Init_stub(a1, a2);
