@@ -429,19 +429,19 @@ namespace StarCitizen
 		inline constexpr auto oCSCLocalPlayerMovement_Update = 0x4A1C3E0;			//  E8 ? ? ? ? C5 FA 5F FE ; grab the additive as well	; [4.0.1d]
 
 		/* CEntity */
-		inline constexpr auto oCEntity_Init = 0x6A97C20;							//	"Entity %llu %s is being initialized from an unexpected state (%u)"
-		inline constexpr auto oCEntity_Shutdown = 0x6AB7F30;						//	"CEntity::ShutDown" or "[Entity] CEntitySystem::DeleteEntity %s %s %llu" - function call after isValid check
+		inline constexpr auto oCEntity_Init = 0x6E8EAA0;							//	"Entity %llu %s is being initialized from an unexpected state (%u)"
+		inline constexpr auto oCEntity_Shutdown = 0x6EAF760;						//	"CEntity::ShutDown" or "[Entity] CEntitySystem::DeleteEntity %s %s %llu" - function call after isValid check
 
 		/* entity helpers */
-		inline constexpr auto oIsValidEntity = 0x03102C0;							//	^ found when looking for CEntity::ShutDown	:	C5 F2 5E F0 E8 ?? ?? ?? ?? 84 C0 75 05
-		inline constexpr auto oGetRenderProxy = 0x033BF70;							//	E8 ?? ?? ?? ?? 48 8B 0F 48 89 4B 10 : "IEntityRenderProxy"
-		inline constexpr auto oIsValidRenderProxy = 0x0381750;						//	xref GetRenderProxy , is generally the following call
+		inline constexpr auto oIsValidEntity = 0x0317A90;							//	^ found when looking for CEntity::ShutDown	:	C5 F2 5E F0 E8 ?? ?? ?? ?? 84 C0 75 05 ; is_valid_handle_typeB
+		inline constexpr auto oGetRenderProxy = 0x03439B0;							//	E8 ?? ?? ?? ?? 48 8B 0F 48 89 4B 10 : "IEntityRenderProxy"
+		inline constexpr auto oIsValidRenderProxy = 0x038B430;						//	xref GetRenderProxy , is generally the following call ; AssetMeta::HasActorSubresource
 
 		/* CEntitySystem */
-		inline constexpr auto oCEntitySystem_Update = 0x6ABBF80;					//	"CEntitySystem::Update"
-		inline constexpr auto oCEntitySystem_SpawnEntity = 0x6AB86F0;				//	"CEntitySystem::SpawnEntityImpl"
-		inline constexpr auto oCEntitySystem_DeleteEntity = 0x6A7FF10;				//	"CEntitySystem::DeleteEntity"
-		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6A8DD30;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
+		inline constexpr auto oCEntitySystem_Update = 0x6EB3980;					//	"CEntitySystem::Update"
+		inline constexpr auto oCEntitySystem_SpawnEntity = 0x6EB0030;				//	"CEntitySystem::SpawnEntityImpl"
+		inline constexpr auto oCEntitySystem_DeleteEntity = 0x6E768C0;				//	"CEntitySystem::DeleteEntity"
+		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6E84B10;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
 
 		/* CRenderProxy */
 		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x69FB280;				//	"CRenderProxy::GetLocalBounds" 2nd xref
