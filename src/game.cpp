@@ -262,96 +262,96 @@ namespace StarCitizen
 #endif	//	dev features
 
 			/*	GO TO POINT */
-			if (vars::goto_bFindPoint)
-			{
-				Structs::DVector pos;
-				if (Helpers::GetPointByName(vars::goto_TargetName.c_str(), &pos))
-				{
-					/* set pos & enable UFO mode */
-					Classes::CEntity* pLocalEntity = StarCitizen::Helpers::GetLocalPlayerEntity();
-					Thread::LocalTeleport(pos, true);
-				}
-				else
-					printf(__("[!] Failed to find go to point % s\n"), vars::goto_TargetName.c_str());
-
-				vars::goto_bFindPoint = false;
-				vars::goto_TargetName.clear();
-			}
+			//	if (vars::goto_bFindPoint)
+			//	{
+			//		Structs::DVector pos;
+			//		if (Helpers::GetPointByName(vars::goto_TargetName.c_str(), &pos))
+			//		{
+			//			/* set pos & enable UFO mode */
+			//			Classes::CEntity* pLocalEntity = StarCitizen::Helpers::GetLocalPlayerEntity();
+			//			Thread::LocalTeleport(pos, true);
+			//		}
+			//		else
+			//			printf(__("[!] Failed to find go to point % s\n"), vars::goto_TargetName.c_str());
+			//	
+			//		vars::goto_bFindPoint = false;
+			//		vars::goto_TargetName.clear();
+			//	}
 
 			/* COMMAND EXECUTOR */
 			if (vars::cmd_bExec)
 			{
 				vars::cmd_bExec = false;
-
+			
 				Hooks::vars::cmd_selection.ExecuteCmd(Hooks::vars::cmd_count, Hooks::vars::cmd_args);
-
+			
 				/* reset for next command */
 				Hooks::vars::cmd_count = 1;
 				memset(Hooks::vars::cmd_args, 0, sizeof(Hooks::vars::cmd_args));
 			}
-
-			/* heal local player */
-			if (vars::cheat_bHealSelf || vars::cheat_bAutoHeal)
-			{
-				vars::cheat_bHealSelf = false;
-				auto pLocalEntity = Helpers::GetLocalPlayerEntity();
-				if (pLocalEntity)
-				{
-					float newHealth = 0.0f;
-
-					/* auto heal local player */
-					if (vars::cheat_bAutoHeal)
-						newHealth = Helpers::GetEntityHealth(pLocalEntity);
-					else
-						newHealth = Helpers::GetEntityMaxHealth(pLocalEntity);
-
-					Helpers::SetEntityHealth(pLocalEntity, newHealth);
-				}
-			}
-
-			/* kill local player */
-			if (vars::cheat_bKillSelf)
-			{
-
-				vars::cheat_bKillSelf = false;
-				auto pLocalEntity = Helpers::GetLocalPlayerEntity();
-				if (pLocalEntity)
-				{
-					Helpers::SetEntityHealth(pLocalEntity, Helpers::GetEntityMaxHealth(pLocalEntity) * 0.f);
-
-
-					//	const auto& pComponents = CleanPointer<Classes::IEntityComponents*>(pLocalEntity->pComponents);
-					//	if (pComponents)					{
-					//	
-					//	
-					//		const auto& pActorComponent = CleanPointer<Classes::CSCActorComponent*>(pComponents->pActorComponent);
-					//		const auto& pHealthComponent = CleanPointer<Classes::CSCBodyHealthComponent*>(pComponents->pHealthComponent);
-					//		if (pActorComponent && pHealthComponent)
-					//	
-					//		{
-					//			//	Functions::CSCBodyHealthComponent_ApplyHealthChange(
-					//			//		(__int64)pHealthComponent,
-					//			//		0.f,
-					//			//		(__int64)pLocalEntity,
-					//			//		0
-					//			//	);
-					//	
-					//			//	Functions::CSCBodyHealthComponent_AuthorityRequestHit(
-					//			//		(__int64)pHealthComponent, 
-					//			//		(__int64)pLocalEntity, 
-					//			//		135.0f
-					//			//	);
-					//	
-					//			//	CallVFunction<__int64>(pActorComponent, vft_Actor_SetHealth / 8, 0.f);
-					//		}
-					//	
-					//	}
-				}
-			}
-
-
-			if (vars::cheat_bSpaceBrake)
-				Thread::SpaceShipHandbrake();
+			
+			//	/* heal local player */
+			//	if (vars::cheat_bHealSelf || vars::cheat_bAutoHeal)
+			//	{
+			//		vars::cheat_bHealSelf = false;
+			//		auto pLocalEntity = Helpers::GetLocalPlayerEntity();
+			//		if (pLocalEntity)
+			//		{
+			//			float newHealth = 0.0f;
+			//	
+			//			/* auto heal local player */
+			//			if (vars::cheat_bAutoHeal)
+			//				newHealth = Helpers::GetEntityHealth(pLocalEntity);
+			//			else
+			//				newHealth = Helpers::GetEntityMaxHealth(pLocalEntity);
+			//	
+			//			Helpers::SetEntityHealth(pLocalEntity, newHealth);
+			//		}
+			//	}
+			//	
+			//	/* kill local player */
+			//	if (vars::cheat_bKillSelf)
+			//	{
+			//	
+			//		vars::cheat_bKillSelf = false;
+			//		auto pLocalEntity = Helpers::GetLocalPlayerEntity();
+			//		if (pLocalEntity)
+			//		{
+			//			Helpers::SetEntityHealth(pLocalEntity, Helpers::GetEntityMaxHealth(pLocalEntity) * 0.f);
+			//	
+			//	
+			//			//	const auto& pComponents = CleanPointer<Classes::IEntityComponents*>(pLocalEntity->pComponents);
+			//			//	if (pComponents)					{
+			//			//	
+			//			//	
+			//			//		const auto& pActorComponent = CleanPointer<Classes::CSCActorComponent*>(pComponents->pActorComponent);
+			//			//		const auto& pHealthComponent = CleanPointer<Classes::CSCBodyHealthComponent*>(pComponents->pHealthComponent);
+			//			//		if (pActorComponent && pHealthComponent)
+			//			//	
+			//			//		{
+			//			//			//	Functions::CSCBodyHealthComponent_ApplyHealthChange(
+			//			//			//		(__int64)pHealthComponent,
+			//			//			//		0.f,
+			//			//			//		(__int64)pLocalEntity,
+			//			//			//		0
+			//			//			//	);
+			//			//	
+			//			//			//	Functions::CSCBodyHealthComponent_AuthorityRequestHit(
+			//			//			//		(__int64)pHealthComponent, 
+			//			//			//		(__int64)pLocalEntity, 
+			//			//			//		135.0f
+			//			//			//	);
+			//			//	
+			//			//			//	CallVFunction<__int64>(pActorComponent, vft_Actor_SetHealth / 8, 0.f);
+			//			//		}
+			//			//	
+			//			//	}
+			//		}
+			//	}
+			//	
+			//	
+			//	if (vars::cheat_bSpaceBrake)
+			//		Thread::SpaceShipHandbrake();
 
 			/* do ufo mode */
 			if (vars::cheat_bUFO)
@@ -361,30 +361,30 @@ namespace StarCitizen
 				else
 					Thread::SHIP_UFO(vars::mUFOSpeedScalar);
 			}
-
-			/* auto destroy mineable */
-			if (vars::cheat_mining_mFlag)
-			{
-				const long long success = 0xB700000000;
-				vars::cheat_mining_mFlag = false;
-				vars::cheat_mining_bAutoFracture = false;
-
-				Functions::FractureMineable_stub(vars::cheat_mining_pMineable, (__int64)&success, 1);
-			}
-
-			if (vars::datacore_bFindInstance && !vars::datacore_TargetName.empty())
-			{
-				vars::datacore_bFindInstance ^= 1;
-				if (const auto& pInstance = Helpers::datacore::GetStructInstance(vars::datacore_TargetName))
-					Helpers::CopyToClipboard(__("%s: 0x%llX"), vars::datacore_TargetName.c_str(), pInstance);
-				
-				vars::datacore_TargetName.clear();
-
-				//	const auto& pMiningGlobalParams = Helpers::datacore::GetStructInstance("MiningGlobalParams.MiningGlobalParams");
-				//	const auto& pGlobalSalvageRepairParams = Helpers::datacore::GetStructInstance("SGlobalSalvageRepairBeamParams.SGlobalSalvageRepairBeamParams");
-				//	printf("MiningGlobalParams: 0x%llX\n", pMiningGlobalParams);
-				//	printf("SGlobalSalvageRepairBeamParams: 0x%llX\n", pGlobalSalvageRepairParams);
-			}
+			
+			//	/* auto destroy mineable */
+			//	if (vars::cheat_mining_mFlag)
+			//	{
+			//		const long long success = 0xB700000000;
+			//		vars::cheat_mining_mFlag = false;
+			//		vars::cheat_mining_bAutoFracture = false;
+			//	
+			//		Functions::FractureMineable_stub(vars::cheat_mining_pMineable, (__int64)&success, 1);
+			//	}
+			//	
+			//	if (vars::datacore_bFindInstance && !vars::datacore_TargetName.empty())
+			//	{
+			//		vars::datacore_bFindInstance ^= 1;
+			//		if (const auto& pInstance = Helpers::datacore::GetStructInstance(vars::datacore_TargetName))
+			//			Helpers::CopyToClipboard(__("%s: 0x%llX"), vars::datacore_TargetName.c_str(), pInstance);
+			//		
+			//		vars::datacore_TargetName.clear();
+			//	
+			//		//	const auto& pMiningGlobalParams = Helpers::datacore::GetStructInstance("MiningGlobalParams.MiningGlobalParams");
+			//		//	const auto& pGlobalSalvageRepairParams = Helpers::datacore::GetStructInstance("SGlobalSalvageRepairBeamParams.SGlobalSalvageRepairBeamParams");
+			//		//	printf("MiningGlobalParams: 0x%llX\n", pMiningGlobalParams);
+			//		//	printf("SGlobalSalvageRepairBeamParams: 0x%llX\n", pGlobalSalvageRepairParams);
+			//	}
 
 			return Functions::CSystem_Update_stub(a1, a2, a3);
 		}
