@@ -444,8 +444,8 @@ namespace StarCitizen
 		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6E84B10;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
 
 		/* CRenderProxy */
-		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x69FB280;				//	"CRenderProxy::GetLocalBounds" 2nd xref
-		inline constexpr auto oCActor_GetBoneTransform = 0x651D460;					//	"CSCActorResultAdditiveStateDematerialize::SpawnEffectAtBone" around Ln. 30 ; [4.0.1d]							
+		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x6DF2940;				//	"CRenderProxy::GetLocalBounds" 2nd xref
+		inline constexpr auto oCActor_GetBoneTransform = 0x68E6B60;					//	"CSCActorResultAdditiveStateDematerialize::SpawnEffectAtBone" around Ln. 30 ; [4.0.1d]							
 
 		/* */
 		inline constexpr auto oCRigidEntity_VerifyExistingContacts = 0x68066C0;		//	"CRigidEntity::VerifyExistingContacts"
