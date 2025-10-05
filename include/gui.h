@@ -108,4 +108,4 @@ private:
 	DxWindow m_dxWindow;			//	DirectX window
 	DxWindow::SOverlay m_overlay;	//	Overlay Elements
 };
-
+inline gui g_gui;
