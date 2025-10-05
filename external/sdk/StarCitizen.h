@@ -1054,8 +1054,8 @@ namespace StarCitizen
 		public:		
 			char pad_0008[216];	//0x0008
 			class CUnknownData* pUnknownPointer;	//0x00E0
-			char pad_00E8[2840];	//0x00E8
-			class CSCPlayer* pLocalPlayer;	//0x0C00
+			char pad_00E8[2848];	//0x00E8
+			class CSCPlayer* pLocalPlayer;	//0x0C08
 
 
 		protected:
@@ -1129,10 +1129,11 @@ namespace StarCitizen
 		class CEntitySystem
 		{
 		public:	
-			char pad_0008[256];	//0x0008
-			__int64 szEntities;	//0x0108
-			char pad_0110[56];	//0x0110
-			VArray EntityArray;	//0x0148
+			char pad_0008[216]; //0x0008
+			int64_t szEntities; //0x00E0
+			char pad_00E8[48]; //0x00E8
+			VArray EntityArray; //0x0118
+
 
 		public:
 			virtual void vf_Function0();
@@ -1251,10 +1252,10 @@ namespace StarCitizen
 			char pad_0328[440];	//0x0328
 			class CEntity* pSeatEntity;	//0x04E0
 			class CEntity* pLocalZoneEntity;	//0x04E8
-			char pad_04F0[752];	//0x04F0
-			char* pGenderText;	//0x07E0
-			char pad_07E8[2024];	//0x07E8
-			class CActorEntity* pActorEntity;	//0x0FD0
+			char pad_04F0[760]; //0x04F0
+			char* pGenderText; //0x07E8
+			char pad_07F0[2024]; //0x07F0
+			class CActorEntity* pActorEntity; //0x0FD8
 
 		public:
 			virtual void vf_Function0();
@@ -1356,8 +1357,8 @@ namespace StarCitizen
 		class CPhysicalEntity
 		{
 		public:
-			char pad_0008[208];	//0x0008
-			char* pName;	//0x00D8
+			char pad_0008[200]; //0x0008
+			char* pName; //0x00D0
 			char pad_00E0[224];	//0x00E0
 			DVector mLocalLocation;	//0x01C0
 			FQuat mLocalAngles;	//0x01D8
@@ -1381,8 +1382,20 @@ namespace StarCitizen
 			char pad_01E8[1930];	//0x01E8
 			unsigned char mCollision;	//0x0972
 			bool bFloat;	//0x0973
-			char pad_0974[140];	//0x0974
-			class CPhysicalEntity* pGroundObject;	//0x0A00
+			char pad_0974[132]; //0x0974
+			class CPhysicalEntity* pGroundObject; //0x09F8			
+			//	char pad_0A00[112];	//0x0A00
+			//	class CRenderProxy* pRenderProxy;	//0x0A70
+			//	char pad_0A78[200];	//0x0A78
+			//	class CSCActorComponent* pActorComponent;	//0x0B40
+			//	char pad_0B48[1048];	//0x0B48
+			//	float mHealth;	//0x0E88
+			//	float mMaxHealth;	//0x0E8C
+			//	char pad_0E90[128];	//0x0E90
+			//	float mMass;	//0x0F10
+			//	char pad_0F14[120];	//0x0F14
+			//	float mSpeed;	//0x0F90
+			//	char pad_0F94[156];	//0x0F94
 
 		protected:
 			virtual void Function0();
