@@ -403,6 +403,9 @@ namespace StarCitizen
 		inline auto oCEntityClassRegistry_RegisterClass = 0x6EA2BA0;		//	"CEntityClassRegistry::RegisterClass"	|	@NOTE: Must be called from game thread								
 		inline auto oCEntityClassRegistry_FindClass = 0x6E7F350;			//	"CEntityClassRegistry::FindClass"	2nd xref	|	@NOTE: Must be called from game thread		
 
+		/* CGoToPointManager */
+		inline constexpr auto oCGoToPointManager_GetGoToPointByName = 0x3F677E0;	//	"CGoToPointsManager::GetPointByName"
+
 		/* CSystem */
 		inline auto oCSystem_Update = 0x79295B0;							//	"CSystem::Update"	: "ICharacterManager::Update()"
 		inline auto oCSystem_Init = 0x78EF8D0;							//	"CSystem::Init"	
@@ -419,11 +422,8 @@ namespace StarCitizen
 		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x09615E0;					//	VFIndex = 172
 		inline constexpr auto oCRenderer_FlushTextMessages = 0x097E650;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
 
-		/* CGoToPointManager */
-		inline constexpr auto oCGoToPointManager_GetGoToPointByName = 0x3C12710;	//	"CGoToPointsManager::GetPointByName"
-
 		/* CCamera */
-		inline constexpr auto oCCamerViewManager_Update = 0x37ECFD0;				//	"CCameraViewManager::Update"	
+		inline constexpr auto oCCamerViewManager_Update = 0x3B27170;				//	"CCameraViewManager::Update"	
 
 		/* CSCLocalPlayerMovement */
 		inline constexpr auto oCSCLocalPlayerMovement_Update = 0x4A1C3E0;			//  E8 ? ? ? ? C5 FA 5F FE ; grab the additive as well	; [4.0.1d]
@@ -451,9 +451,9 @@ namespace StarCitizen
 		inline constexpr auto oCRigidEntity_VerifyExistingContacts = 0x68066C0;		//	"CRigidEntity::VerifyExistingContacts"
 
 		/* [DEV] Fly Mode Command */
-		inline constexpr auto oGetIActor = 0x6541BD0;								//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
-		inline constexpr auto oCCharacterStateHiearchy_SetState = 0x5A301D0;		//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
-		inline constexpr auto oCCharacterStateHiearchy_VerifyState = 0x4D6C430;		//		"FlyMode/NoClip ON"
+		inline constexpr auto oGetIActor = 0x690C070;								//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
+		inline constexpr auto oCCharacterStateHiearchy_SetState = 0x5DE8660;		//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
+		inline constexpr auto oCCharacterStateHiearchy_VerifyState = 0x510F160;		//		"FlyMode/NoClip ON"
 
 		/* Weapon and Equipment params */
 		inline constexpr auto oCSCAmmoContainerComponent_GetAmmoCount = 0x59290C0;	//		"Weapon::CAmmoContainerComponent::GetAmmoCount" - "Weapon::Action::SWeaponActionFireSingleState" analyze vfTable between __StarEngineModule__ calls
