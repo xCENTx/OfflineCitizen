@@ -408,9 +408,6 @@ namespace FileManagement
 
 #pragma endregion
 
-
-
-
 	//---------------------------------------------------------------------------------------------------
 	// 
 	//	----------	[SECTION] CJSON::UserManager

@@ -74,5 +74,14 @@ namespace FileManagement
 		};
 
 	};
+
+	class StringHelper
+	{
+	public:
+		static std::string								FormatString(const char* fmt, ...);
+		static std::string								FormatDistance(const float& distance) noexcept; // "[10km]"
+		// static Structs::FVector2D						CalcTextSize(const std::string& text, const float& szFont = 8.f) noexcept;	//	Calculates the size of a text
+		static void										CopyToClipboard(const char* input, ...);
+	};
 }
 
