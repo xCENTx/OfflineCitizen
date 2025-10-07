@@ -351,7 +351,13 @@ void init()
 	gGoToMan = reinterpret_cast<StarCitizen::Classes::CGoToPointManager*>(GetAddr(StarCitizen::Offsets::gGoToPointMan));
 	
 	initHooks();
-	
+
+	HANDLE h = CreateEventW(NULL, TRUE, FALSE, L"OfflineCitizen_Init_Finished");
+	if (h) {
+		SetEvent(h);
+		CloseHandle(h);
+	}
+
 	bRunning = true;
 }
 
@@ -374,8 +380,8 @@ void shutdown()
 	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntity_Init));
 	memory::hooker::Remove((void*)GetAddr(Offsets::oCEntity_Shutdown));
 	memory::hooker::Remove((void*)GetAddr(Offsets::oCCamerViewManager_Update));
-	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCRenderer_MTUpdate));
-	//	memory::hooker::Remove((void*)GetAddr(Offsets::oC3DEngine_RenderWorld));
+	memory::hooker::Remove((void*)GetAddr(Offsets::oCRenderer_MTUpdate));
+	memory::hooker::Remove((void*)GetAddr(Offsets::oC3DEngine_RenderWorld));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCSCAmmoContainerComponent_GetAmmoCount));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCCharacterStateHiearchy_VerifyState));
 	//	memory::hooker::Remove((void*)GetAddr(Offsets::oCWeaponActionFireSalvageRepair_GetRayCastRequest));
@@ -423,13 +429,35 @@ void initConsole()
 	freopen_s(&StarCitizen::Hooks::vars::console_output_stream, "CONOUT$", "w", stdout);
 	StarCitizen::Hooks::vars::console_handle = GetStdHandle(STD_OUTPUT_HANDLE);	// output handle
 	StarCitizen::Hooks::vars::console_wndw = GetConsoleWindow();					// console window handle
+#if _DEBUG
+	ShowWindow(StarCitizen::Hooks::vars::console_wndw, SW_SHOW);					// show console window
+#else
 	ShowWindow(StarCitizen::Hooks::vars::console_wndw, SW_HIDE);					// hide console window
+#endif
 }
 
 // @todo: relocate
 void initHooks()
 {
 	bool bHooked{ false };
+
+	/* CSYSTEM */
+	{
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Init),
+			(void**)&StarCitizen::Functions::CSystem_Init_stub,
+			(void*)StarCitizen::Hooks::CSystem_Init_hook
+		);
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Update),
+			(void**)&StarCitizen::Functions::CSystem_Update_stub,
+			(void*)StarCitizen::Hooks::CSystem_Update_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CSystem::Update\n");
+#endif
+	}
 
 	/* DISABLE CRASH DUMPS */
 	{
@@ -566,19 +594,6 @@ void initHooks()
 #if _DEBUG
 		if (!bHooked)
 			printf("- CEntityRegistrySystem::RegisterClass.\n");
-#endif
-	}
-
-	/* CSYSTEM */
-	{
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Update),
-			(void**)&StarCitizen::Functions::CSystem_Update_stub,
-			(void*)StarCitizen::Hooks::CSystem_Update_hook
-		);
-#if _DEBUG
-		if (!bHooked)
-			printf("- CSystem::Update\n");
 #endif
 	}
 

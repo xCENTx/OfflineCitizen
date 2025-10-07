@@ -65,104 +65,28 @@ int main()
 	ZeroMemory(&sInfo, sizeof(sInfo));
 	sInfo.cb = sizeof(sInfo);
 	ZeroMemory(&pInfo, sizeof(pInfo));
-	if (!CreateProcessA(STAR_CITIZEN_PATH, LPSTR(params.c_str()), 0, 0, false, /*CREATE_SUSPENDED*/0, 0, 0, (LPSTARTUPINFOA)&sInfo, &pInfo))
+	if (!CreateProcessA(STAR_CITIZEN_PATH, LPSTR(params.c_str()), 0, 0, false, CREATE_SUSPENDED, 0, 0, (LPSTARTUPINFOA)&sInfo, &pInfo))
 		return exitWithCode("[!] failed to create star citizen process.", 4);
 	printf("[+] created star citizen process.\n");
 
-	///	Attach to StarCitizen Process
-	//	exMemory mem("StarCitizen.exe");
-	//	if (!mem.bAttached)
-	//	{
-	//		TerminateProcess(pInfo.hProcess);
-	//		return exitWithCode("[!] failed to attach to star citizen process.", 5);
-	//	}
-	//	printf("[+] attached to star citizen process.\n");
-
+	///	Inject DLL into StarCitizen Process
 	if (!exMemory::LoadLibraryInjectorEx(pInfo.hProcess, DLL_PATH))
 	{
 		TerminateProcess(pInfo.hProcess);
 		return exitWithCode("[!] failed to inject module into star citizen process.", 6);
 	}
 
-	///	Patch EAC Events
-	//	const auto& fn = mem.FindPattern("E8 ? ? ? ? 40 88 B7 ? ? ? ? 48 8B CF", 0, EASM::ASM_CALL);
-	//	if (!fn)
-	//	{
-	//		TerminateProcess(pInfo.hProcess);
-	//		return exitWithCode("[!] failed to find EAC event function.", 7);
-	//	}
-	//	printf("[+] found EAC event function at address 0x%p\n", (void*)fn);
-
-	//	std::vector<unsigned char> patch = { 0xC3 };
-	//	if (!mem.PatchMemory(fn, patch.data(), patch.size()))
-	//	{
-	//		TerminateProcess(pInfo.hProcess);
-	//		return exitWithCode("[!] failed to patch EAC event function.", 8);
-	//	}
-	//	printf("[+] patched EAC event function.\n");
-
-	///	Patch Game Crash Reporter
-	//	const auto fnCrashReporter = mem.FindPattern("BA ? ? ? ? 48 8D 0D ? ? ? ? E8 ? ? ? ? 85 C0");
-	//	if (!fnCrashReporter)
-	//	{
-	//		TerminateProcess(pInfo.hProcess);
-	//		return exitWithCode("[!] failed to find game crash reporter function.", 9);
-	//	}
-	//	printf("[+] found game crash reporter function at address 0x%p\n", (void*)fnCrashReporter);
-
-	//	std::vector<unsigned char> patchCrashReporter = { 0x90, 0xE9 };
-	//	if (!mem.PatchMemory(fnCrashReporter, patchCrashReporter.data(), patchCrashReporter.size()))
-	//	{
-	//		TerminateProcess(pInfo.hProcess);
-	//		return exitWithCode("[!] failed to patch game crash reporter function.", 10);
-	//	}
-	//	printf("[+] patched game crash reporter function.\n");
-
-	//	{
-	//	
-	//		std::string path = DLL_PATH;
-	//	
-	//		//  allocate memory
-	//		void* addr = VirtualAllocEx(pInfo.hProcess, 0, MAX_PATH, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	//		if (!addr)
-	//		{
-	//			TerminateProcess(pInfo.hProcess);
-	//			return exitWithCode("[!] failed to allocate memory in star citizen process.", 11);
-	//		}
-	//		printf("[+] allocated memory in star citizen process at address 0x%p\n", addr);
-	//	
-	//		//  write to memory
-	//		if (!WriteProcessMemory(pInfo.hProcess, addr, path.c_str(), path.size() + 1, 0))
-	//		{
-	//			VirtualFreeEx(pInfo.hProcess, addr, 0, MEM_RELEASE);
-	//			TerminateProcess(pInfo.hProcess);
-	//			return exitWithCode("[!] failed to write memory in star citizen process.", 12);
-	//		}
-	//		printf("[+] wrote module path to star citizen process memory.\n");
-	//	
-	//		//  create thread
-	//		HANDLE hThread = CreateRemoteThread(pInfo.hProcess, 0, 0, (LPTHREAD_START_ROUTINE)LoadLibraryA, addr, 0, 0);
-	//		if (!hThread)
-	//		{
-	//			VirtualFreeEx(pInfo.hProcess, addr, 0, MEM_RELEASE);
-	//			TerminateProcess(pInfo.hProcess);
-	//			return exitWithCode("[!] failed to create remote thread in star citizen process.", 13);
-	//		}
-	//		//	WaitForSingleObject(hThread, INFINITE);
-	//		printf("[+] created remote thread in star citizen process.\n");
-	//	
-	//		//	DWORD exitCode = 0;
-	//		//	GetExitCodeThread(hThread, &exitCode);
-	//		//	if (!exitCode)
-	//		//	{
-	//		//		TerminateProcess(pInfo.hProcess);
-	//		//		return exitWithCode("[!] failed to load test module in star citizen process.", 14);
-	//		//	}
-	//		//	printf("[+] injected module at address 0x%p\n", (void*)exitCode);
-	//	
-	//		//  close handle
-	//		CloseHandle(hThread);
-	//	}
+	/// Wait for DLL to load
+	// launcher side
+	HANDLE hEvent = CreateEventW(NULL, TRUE, FALSE, L"OfflineCitizen_Init_Finished");
+	if (hEvent) {
+		// after injection (or before, doesn't matter), wait:
+		DWORD wait = WaitForSingleObject(hEvent, 10000 /* timeout ms or INFINITE */);
+		if (wait == WAIT_OBJECT_0) {
+			// DLL signalled completion
+		}
+		CloseHandle(hEvent);
+	}
 
 	///	Resume StarCitizen Process
 	if (ResumeThread(pInfo.hThread) == -1)

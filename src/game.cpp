@@ -252,6 +252,59 @@ namespace StarCitizen
 			return 0;
 		}
 
+		bool __fastcall CSystem_Init_hook(void* a1, __int64 a2)
+		{
+			/* 
+			* 
+			* Dedicated Server
+				LogTraceConditional(
+					"[CIG] gEnv->IsDedicated[%d] CSystem::m_bDedicatedServer[%d] startupParams.bDedicatedServer[%d]",
+					BYTE1(qword_149F9A436),
+					*(unsigned __int8 *)(_R15 + 0x3DB),
+					*(unsigned __int8 *)(a2 + 0x41));
+			
+			* cmd line	
+				LogTraceConditional("[CIG] startupParams.szSystemCmdLine	[%s]", v179);	0x130
+
+			* flags
+				v435[0] = v182;
+				v436 = "Online";
+				v422[0] = *(_BYTE *)(a2 + 0x46);
+				v423 = "Headless";
+				v428[0] = *(_BYTE *)(a2 + 0x42);
+				v429 = "Service";
+				v424[0] = *(_BYTE *)(a2 + 0x41);
+
+						Wiljafor1:
+							info( "[+] CSystem_init_hook called ...\n" );
+
+							*(BYTE*)( a2 + 0x41 ) = 1;
+							info( "[+] Set startupParams.bDedicatedServer to true\n" );
+
+							*(BYTE*)( a2 + 0x52 ) = 1;
+							//*(BYTE*)( a2 + 0x55 ) = 1;
+
+							const auto gEnvFlags = GetAddr( 0x9F9A436 );
+							if ( gEnvFlags )
+							{
+								*(BYTE*)( gEnvFlags + 1 ) = 1;  // BYTE1(gEnvFlags)
+								info( "[+] Set gEnvFlags IsDedicated to true at addr: 0x%llX\n", gEnvFlags );
+			}
+			*/
+			const auto& _R15 = a1;
+			auto result = Functions::CSystem_Init_stub(a1, a2);
+
+			auto ref = IDA_OFFSET(0x9F9A436);
+			auto BYTE1 = *(bool*)ref; // BYTE1(qword_149F9A436),
+			auto m_bDedicatedServer = *(unsigned __int8*)((long long)_R15 + 0x3DB); // CSystem::m_bDedicatedServer[%d]
+			auto bDedicatedServer = *(unsigned __int8*)(a2 + 0x41); // startupParams.bDedicatedServer[%d]
+			auto szCmdLine = (char*)(a2 + 0x130); // startupParams.szSystemCmdLine	[%s]
+			printf(__("[*] gEnv->IsDedicated[%d] CSystem::m_bDedicatedServer[%d] startupParams.bDedicatedServer[%d]\n"), BYTE1, m_bDedicatedServer, bDedicatedServer);
+			printf(__("[*] startupParams.szSystemCmdLine	[%s]\n"), szCmdLine);
+	
+			return result;
+		}
+
 		__int64 __fastcall CSystem_Update_hook(void* a1, void* a2, void* a3)
 		{
 #if _DEBUG
