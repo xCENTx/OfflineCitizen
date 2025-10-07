@@ -426,7 +426,10 @@ void initConsole()
 {
 	//	CONSOLE OUTPUT
 	AllocConsole();
-	freopen_s(&StarCitizen::Hooks::vars::console_output_stream, "CONOUT$", "w", stdout);
+	AttachConsole(GetCurrentProcessId());
+	freopen_s(&StarCitizen::Hooks::vars::console_input_stream, "CONIN$", "r", stdin);
+	freopen_s(&StarCitizen::Hooks::vars::console_output_stream, "CONOUT$", "w", stdout);    
+	freopen_s(&StarCitizen::Hooks::vars::console_output_stream, "CONOUT$", "w", stderr);
 	StarCitizen::Hooks::vars::console_handle = GetStdHandle(STD_OUTPUT_HANDLE);	// output handle
 	StarCitizen::Hooks::vars::console_wndw = GetConsoleWindow();					// console window handle
 #if _DEBUG
@@ -441,21 +444,25 @@ void initHooks()
 {
 	bool bHooked{ false };
 
-	/* CSYSTEM */
+	/* PATCH EAC DISCIPLINE SERVICE */
 	{
+		//	StarCitizen::Offsets::oEAC_HandleDiscipline = memory::PatternScan(
+		//		reinterpret_cast<long long>(GetCurrentProcess()),
+		//		__("E8 ? ? ? ? 40 88 B7 ? ? ? ? 48 8B CF"),
+		//		true, 0, memory::EMEM_ASM_TYPE::CALL);
+		//	if (!StarCitizen::Offsets::oEAC_HandleDiscipline)
+		//	{
+		//		MessageBoxA(0, __("Failed to locate 'oEAC_HandleDiscipline' pattern."), __("PatternScan Error"), MB_OK | MB_ICONERROR);
+		//		return;
+		//	}
 		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Init),
-			(void**)&StarCitizen::Functions::CSystem_Init_stub,
-			(void*)StarCitizen::Hooks::CSystem_Init_hook
-		);
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Update),
-			(void**)&StarCitizen::Functions::CSystem_Update_stub,
-			(void*)StarCitizen::Hooks::CSystem_Update_hook
+			(void*)GetAddr(StarCitizen::Offsets::oEAC_HandleDiscipline),
+			(void**)&StarCitizen::Functions::EAC_HandleDiscipline_stub,
+			(void*)StarCitizen::Hooks::EAC_HandleDiscipline_hook
 		);
 #if _DEBUG
 		if (!bHooked)
-			printf("- CSystem::Update\n");
+			printf("- EAC::HandleDiscipline.\n");
 #endif
 	}
 
@@ -492,25 +499,25 @@ void initHooks()
 			return;
 	}
 
-	/* PATCH EAC DISCIPLINE SERVICE */
+	/* CSYSTEM */
 	{
-		//	StarCitizen::Offsets::oEAC_HandleDiscipline = memory::PatternScan(
-		//		reinterpret_cast<long long>(GetCurrentProcess()),
-		//		__("E8 ? ? ? ? 40 88 B7 ? ? ? ? 48 8B CF"),
-		//		true, 0, memory::EMEM_ASM_TYPE::CALL);
-		//	if (!StarCitizen::Offsets::oEAC_HandleDiscipline)
-		//	{
-		//		MessageBoxA(0, __("Failed to locate 'oEAC_HandleDiscipline' pattern."), __("PatternScan Error"), MB_OK | MB_ICONERROR);
-		//		return;
-		//	}
 		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oEAC_HandleDiscipline),
-			(void**)&StarCitizen::Functions::EAC_HandleDiscipline_stub,
-			(void*)StarCitizen::Hooks::EAC_HandleDiscipline_hook
+			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Init),
+			(void**)&StarCitizen::Functions::CSystem_Init_stub,
+			(void*)StarCitizen::Hooks::CSystem_Init_hook
 		);
 #if _DEBUG
 		if (!bHooked)
-			printf("- EAC::HandleDiscipline.\n");
+			printf("- CSystem::Init\n");
+#endif
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCSystem_Update),
+			(void**)&StarCitizen::Functions::CSystem_Update_stub,
+			(void*)StarCitizen::Hooks::CSystem_Update_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CSystem::Update\n");
 #endif
 	}
 
@@ -569,6 +576,26 @@ void initHooks()
 		if (!bHooked)
 			printf("- CXConsole::AddCommand.\n");
 #endif
+
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCXCommand_MegaMap),
+			(void**)&StarCitizen::Functions::CXCommand_MegaMap_stub,
+			(void*)StarCitizen::Hooks::CXCommand_MegaMap_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CXCommand::MegaMap\n");
+#endif
+
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCXCommand_LoadMegaMap),
+			(void**)&StarCitizen::Functions::CXCommand_LoadMegaMap_stub,
+			(void*)StarCitizen::Hooks::CXCommand_LoadMegaMap_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CXCommand::LoadMegaMap\n");
+#endif
 	}
 
 	/* DATA CORE */
@@ -598,24 +625,6 @@ void initHooks()
 	}
 
 	{
-
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCXCommand_MegaMap),
-			(void**)&StarCitizen::Functions::CXCommand_MegaMap_stub,
-			(void*)StarCitizen::Hooks::CXCommand_MegaMap_hook
-		);
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCXCommand_LoadMegaMap),
-			(void**)&StarCitizen::Functions::CXCommand_LoadMegaMap_stub,
-			(void*)StarCitizen::Hooks::CXCommand_LoadMegaMap_hook
-		);
-#if _DEBUG
-		if (!bHooked)
-			printf("- CXCommand::LoadMegaMap\n");
-#endif
-	}
-
-	{
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCEntitySystem_Update),
 			(void**)&StarCitizen::Functions::CEntitySystem_Update_stub,
@@ -625,11 +634,6 @@ void initHooks()
 		if (!bHooked)
 			printf("- CEntitySystem::Update.\n");
 #endif
-	}
-
-
-	/* */
-	{
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCEntity_Init),
 			(void**)&StarCitizen::Functions::CEntity_Init_stub,
@@ -639,9 +643,6 @@ void initHooks()
 		if (!bHooked)
 			printf("- CEntity::Init\n");
 #endif
-	}
-	
-	{
 
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oCEntity_Shutdown),
@@ -677,9 +678,17 @@ void initHooks()
 		if (!bHooked)
 			printf("- CRenderer::MTUpdate\n");
 #endif
-	}
 
-	{
+		bHooked = memory::hooker::Create(
+			(void*)GetAddr(StarCitizen::Offsets::oCRenderer_FlushTextMessages),
+			(void**)&StarCitizen::Functions::CRenderer_FlushTextMessages_stub,
+			(void*)StarCitizen::Hooks::CRenderer_FlushTextMessages_hook
+		);
+#if _DEBUG
+		if (!bHooked)
+			printf("- CRenderer::FlushTextMessages_hook\n");
+#endif // _DEBUG
+
 		bHooked = memory::hooker::Create(
 			(void*)GetAddr(StarCitizen::Offsets::oC3DEngine_RenderWorld),
 			(void**)&StarCitizen::Functions::C3DEngine_RenderWorld_stub,
@@ -691,18 +700,6 @@ void initHooks()
 #endif
 	}
 
-	/* FLUSH MESSAGES */
-	{
-		bHooked = memory::hooker::Create(
-			(void*)GetAddr(StarCitizen::Offsets::oCRenderer_FlushTextMessages),
-			(void**)&StarCitizen::Functions::CRenderer_FlushTextMessages_stub,
-			(void*)StarCitizen::Hooks::CRenderer_FlushTextMessages_hook
-		);
-#if _DEBUG
-		if (!bHooked)
-			printf("- CRenderer::FlushTextMessages_hook\n");
-#endif // _DEBUG
-	}
 
 	return;
 
