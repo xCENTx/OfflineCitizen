@@ -2,6 +2,9 @@
 
 #define sincos(radian, s, c) s = sin(radian); c = cos(radian)
 #define EXTRACT_LOWER_BYTES(ptr) ((ptr) & 0xFFFFFFFFFFFF)
+#define IDA_OFFSET(offset) ((__int64)GetModuleHandle(0) + offset)
+#define IDA_DEREF(offset) (*(__int64*)IDA_OFFSET(offset))
+#define IDA_CALL(retType, offset, ...) ((retType(*)(__VA_ARGS__))IDA_OFFSET(offset))
 
 /* gamepad keys */
 #define BUTTON_DPAD_UP          XINPUT_GAMEPAD_DPAD_UP   
@@ -505,6 +508,7 @@ namespace StarCitizen
 	{
 		inline auto EAC_HandleDiscipline_stub = reinterpret_cast<void(*)(void*)>(GetAddr(Offsets::oEAC_HandleDiscipline));
 
+		inline auto CSystem_Init_stub = reinterpret_cast<__int64(*)(void*, __int64)>(GetAddr(Offsets::oCSystem_Init));
 		inline auto CSystem_Update_stub = reinterpret_cast<__int64(*)(void*, void*, void*)>(GetAddr(Offsets::oCSystem_Update));
 
 		inline auto CXConsole_GetCVar_stub = reinterpret_cast<__int64(*)(__int64, const char*)>(GetAddr(Offsets::oCXConsole_GetCVar));
@@ -801,6 +805,7 @@ namespace StarCitizen
 		LRESULT	CALLBACK WndProc_hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		__int64 __fastcall EAC_HandleDiscipline_hook(void* a1);
+		bool __fastcall CSystem_Init_hook(void* a1, __int64 a2);
 		__int64 __fastcall CSystem_Update_hook(void* a1, void* a2, void* a3);																							// 
 		__int64 __fastcall C3DEngine_RenderWorld_hook(__int64 a1, unsigned __int8* a2, __int64 a3);																		// 
 		__int64 __fastcall CRenderer_MTUpdate_hook(__int64 a1, __int64 a2);																								// 
@@ -811,8 +816,8 @@ namespace StarCitizen
 		__int64 __fastcall CEntitySystem_Update_hook(__int64 a1);
 		__int64* __fastcall CEntitySystem_SpawnEntity_hook(__int64 a1, __int64* a2, __int64* a3, __int64 a4);															// 
 		__int64 __fastcall CEntitySystem_DeleteEntity_hook(__int64 a1, __int64* a2);																					// 
-		__int64 CEntity_Init_hook(__int64 a1, __int64 a2);																										//
-		__int64 CEntity_Shutdown_hook(__int64 a1);																												//
+		__int64 __fastcall CEntity_Init_hook(__int64 a1, __int64 a2);																										//
+		__int64 __fastcall CEntity_Shutdown_hook(__int64 a1);																												//
 		__int64* __fastcall CXConsole_RegisterIntCvars_hook(__int64 a1, const char* a2, unsigned long* a3, int a4, unsigned int a5, const char* a6, __int64 a7);		// dump console variables
 		__int64* __fastcall CXConsole_RegisterFloatCvars_hook(__int64 a1, const char* a2, unsigned long* a3, float a4, unsigned int a5, const char* a6, __int64 a7);	// dump console variables
 		__int64* __fastcall CXConsole_RegisterInt64Cvars_hook(__int64 a1, const char* a2, unsigned long* a3, __int64 a4, unsigned int a5, const char* a6, __int64 a7);	// dump console variables
