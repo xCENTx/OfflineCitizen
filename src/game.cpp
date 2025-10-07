@@ -292,17 +292,33 @@ namespace StarCitizen
 			}
 			*/
 			const auto& _R15 = a1;
-			auto result = Functions::CSystem_Init_stub(a1, a2);
 
-			auto ref = IDA_OFFSET(0x9F9A436);
-			auto BYTE1 = *(bool*)ref; // BYTE1(qword_149F9A436),
-			auto m_bDedicatedServer = *(unsigned __int8*)((long long)_R15 + 0x3DB); // CSystem::m_bDedicatedServer[%d]
-			auto bDedicatedServer = *(unsigned __int8*)(a2 + 0x41); // startupParams.bDedicatedServer[%d]
-			auto szCmdLine = (char*)(a2 + 0x130); // startupParams.szSystemCmdLine	[%s]
-			printf(__("[*] gEnv->IsDedicated[%d] CSystem::m_bDedicatedServer[%d] startupParams.bDedicatedServer[%d]\n"), BYTE1, m_bDedicatedServer, bDedicatedServer);
-			printf(__("[*] startupParams.szSystemCmdLine	[%s]\n"), szCmdLine);
+			auto ref = IDA_OFFSET(0x9F9A436) + 1;
+			if (ref)
+				*(bool*)ref = 1; // BYTE1(qword_149F9A436) = 1;
+			
+			auto m_bDedicatedServer = ((long long)_R15 + 0x3DB); // CSystem::m_bDedicatedServer[%d]
+			if (m_bDedicatedServer)
+				*(bool*)m_bDedicatedServer = 1;
 	
-			return result;
+			auto bDedicatedServer = (a2 + 0x41); // startupParams.bDedicatedServer[%d]
+			if (bDedicatedServer)
+				*(bool*)(a2 + 0x41) = 1;
+
+			auto szCmdLine = (char*)(*(long long*)(a2 + 0x130)); // startupParams.szSystemCmdLine	[%s]
+
+
+			if (ref && m_bDedicatedServer && bDedicatedServer && szCmdLine)
+			{
+				printf(__("[*] gEnv->IsDedicated[%d] CSystem::m_bDedicatedServer[%d] startupParams.bDedicatedServer[%d]\n"), 
+					*(bool*)ref, 
+					*(bool*)m_bDedicatedServer, 
+					*(bool*)bDedicatedServer
+				);
+				printf(__("[*] startupParams.szSystemCmdLine	[%s]\n"), szCmdLine);
+			}
+
+			return Functions::CSystem_Init_stub(a1, a2);
 		}
 
 		__int64 __fastcall CSystem_Update_hook(void* a1, void* a2, void* a3)
