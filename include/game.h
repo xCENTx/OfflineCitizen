@@ -374,66 +374,65 @@ namespace StarCitizen
 		*/
 
 		/* patches */
-		inline auto oDisableCrashDumps = 0x78B669E;						//	mov     edx, 0A000h     ; dwFlags	|	BA ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0
+		inline auto oDisableCrashDumps = 0x78B667E;						//	mov     edx, 0A000h     ; dwFlags	|	BA ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 85 C0
 
 		/* static pointers */
-		inline constexpr auto gEnv = 0x9F99E40;										//	
-		inline constexpr auto gGoToPointMan = 0xA27CC28;							//	E8 ? ? ? ? 48 8B F8 48 8B 0E 4C 8B 41 ? 41 8D 55 or "Found goto point named %s"
+		inline constexpr auto gEnv = 0x9F99E40;							//	
+		inline constexpr auto gGoToPointMan = 0xA27CC28;				//	E8 ? ? ? ? 48 8B F8 48 8B 0E 4C 8B 41 ? 41 8D 55 or "Found goto point named %s"
 		
 		/* EAC */
-		inline auto oEAC_HandleDiscipline = 0x6807CD0;					//	"HandleEACResult GlobalGameUI"	| E8 ? ? ? ? C6 87 ? ? ? ? ? 48 8B CF E8 ? ? ? ? 8B D8
-		inline auto oBypassPUCheckpoint = 0x24EB5D3;						//	.text:00000001424EB9D3                 jnz     short loc_1424EBA2E	|	"Change Server Start" | "IsShardPersisted[$$] IsServer[$$] IsMultiplayer[$$]"
-
+		inline auto oEAC_HandleDiscipline = 0x6807CB0;					//	"HandleEACResult GlobalGameUI"	| E8 ? ? ? ? C6 87 ? ? ? ? ? 48 8B CF E8 ? ? ? ? 8B D8
+		inline auto oBypassPUCheckpoint = 0x24EB5B3;					//	.text:00000001424EB9D3                 jnz     short loc_1424EBA2E	|	"Change Server Start" | "IsShardPersisted[$$] IsServer[$$] IsMultiplayer[$$]"
 
 		/* CXConsole */
-		inline auto oCXConsole_RegisterCvar_Int = 0x7918B90;				//	"[CVARS]: [DUPLICATE] CXConsole::Register(int): variable [%s] is already registered"								
-		inline auto oCXConsole_RegisterCvar_Float = 0x7918CD0;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(float): variable [%s] is already registered"						
-		inline auto oCXConsole_RegisterCvar_String = 0x7918E20;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(const char*): variable [%s] is already registered"								
-		inline auto oCXConsole_RegisterCvar_Int64 = 0x7918F70;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(int64): variable [%s] is already registered"								
-		inline auto oCXConsole_AddCommand = 0x78ACE90;					//	"[CVARS]: [DUPLICATE] CXConsole::AddCommand(): console command [%s] is already registered"						
-		inline auto oCXConsole_GetCommand = 0x78E5960;					//	"GetConsoleCommand(\"%s\") called"	
-		inline auto oCXConsole_GetCVar = 0x78E55D0;						//	"GetCVar(\"%s\") called"
+		inline auto oCXConsole_RegisterCvar_Int = 0x7918B70;				//	"[CVARS]: [DUPLICATE] CXConsole::Register(int): variable [%s] is already registered"								
+		inline auto oCXConsole_RegisterCvar_Float = 0x7918CB0;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(float): variable [%s] is already registered"						
+		inline auto oCXConsole_RegisterCvar_String = 0x7918E00;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(const char*): variable [%s] is already registered"								
+		inline auto oCXConsole_RegisterCvar_Int64 = 0x7918F50;			//	"[CVARS]: [DUPLICATE] CXConsole::Register(int64): variable [%s] is already registered"								
+		inline auto oCXConsole_AddCommand = 0x78ACE70;					//	"[CVARS]: [DUPLICATE] CXConsole::AddCommand(): console command [%s] is already registered"						
+		inline auto oCXConsole_GetCommand = 0x78E5940;					//	"GetConsoleCommand(\"%s\") called"	
+		inline auto oCXConsole_GetCVar = 0x78E55B0;						//	"GetCVar(\"%s\") called"
 		
 		/* CXCommands */
-		inline constexpr auto oCXCommand_MegaMap = 0x26BB3D0;	//	"Load a map, same usage as 'megamap' cvar."
-		inline constexpr auto oCXCommand_LoadMegaMap = 0x26BAE40;	// called via MegaMap ; x__LoadMegaMap(qword_14A21FBB0, v3, (const char *)&szString); ; "Requesting game mode %s/%s"
+		inline constexpr auto oCXCommand_MegaMap = 0x26BB3B0;	//	"Load a map, same usage as 'megamap' cvar."
+		inline constexpr auto oCXCommand_LoadMegaMap = 0x26BAE20;	// called via MegaMap ; x__LoadMegaMap(qword_14A21FBB0, v3, (const char *)&szString); ; "Requesting game mode %s/%s"
 
 		/* CDataCore */
-		inline auto oCDataCore_RegisterStruct = 0x77FD880;				//	"[DataCore] RegisterStruct: Attempt to register '%s' multiple times"												
-		inline auto oCDataCore_GetStructDataFields = 0x77DFFA0;			//	"CDataCore::GetStructDataFields - [%s] has no DCStructDesc"															
+		inline auto oCDataCore_RegisterStruct = 0x77FD860;				//	"[DataCore] RegisterStruct: Attempt to register '%s' multiple times"												
+		inline auto oCDataCore_GetStructDataFields = 0x77DFF80;			//	"CDataCore::GetStructDataFields - [%s] has no DCStructDesc"															
 
 		/* CEntityClassRegistry */
-		inline auto oCEntityClassRegistry_RegisterClass = 0x6EA2BA0;		//	"CEntityClassRegistry::RegisterClass"	|	@NOTE: Must be called from game thread								
-		inline auto oCEntityClassRegistry_FindClass = 0x6E7F350;			//	"CEntityClassRegistry::FindClass"	2nd xref	|	@NOTE: Must be called from game thread		
+		inline auto oCEntityClassRegistry_RegisterClass = 0x6EA2B80;		//	"CEntityClassRegistry::RegisterClass"	|	@NOTE: Must be called from game thread								
+		inline auto oCEntityClassRegistry_FindClass = 0x6E7F330;			//	"CEntityClassRegistry::FindClass"	2nd xref	|	@NOTE: Must be called from game thread		
 
 		/* CGoToPointManager */
-		inline constexpr auto oCGoToPointManager_GetGoToPointByName = 0x3F677E0;	//	"CGoToPointsManager::GetPointByName"
+		inline constexpr auto oCGoToPointManager_GetGoToPointByName = 0x3F677C0;	//	"CGoToPointsManager::GetPointByName"
 
 		/* CSystem */
-		inline auto oCSystem_Update = 0x79295B0;							//	"CSystem::Update"	: "ICharacterManager::Update()"
-		inline auto oCSystem_Init = 0x78EF8D0;							//	"CSystem::Init"	
+		inline auto oCSystem_Update = 0x7929590;							//	"CSystem::Update"	: "ICharacterManager::Update()"
+		inline auto oCSystem_Init = 0x78EF8B0;							//	"CSystem::Init"	
 
 		/* C3DEngine */
-		inline constexpr auto oC3DEngine_RenderWorld = 0x767C690;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
+		inline constexpr auto oC3DEngine_RenderWorld = 0x767C670;					//	"C3DEngine::RenderWorld" : "e_DebugDraw = %d"
 
 		/* CRenderer */
-		inline constexpr auto oCRenderer_MTUpdate = 0x098D100;						//	"CRenderer::MT_Update" VFIndex = 7
-		inline constexpr auto oCRenderer_ProjectToScreen = 0x0990960;				//	VFIndex = 66
-		inline constexpr auto oCRenderer_DrawText = 0x09774A0;						//	VFIndex = 169
-		inline constexpr auto oCRenderer_DrawText2 = 0x09776E0;						//	VFIndex = 170
-		inline constexpr auto oCRenderer_DrawTextArgs = 0x0977580;					//	VFIndex = 171
-		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x0977780;					//	VFIndex = 172
-		inline constexpr auto oCRenderer_FlushTextMessages = 0x0994620;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
+		inline constexpr auto oCRenderer_MTUpdate = 0x098D0E0;						//	"CRenderer::MT_Update" VFIndex = 7
+		inline constexpr auto oCRenderer_ProjectToScreen = 0x0990940;				//	VFIndex = 66
+		inline constexpr auto oCRenderer_DrawText = 0x0977480;						//	VFIndex = 169
+		inline constexpr auto oCRenderer_DrawText2 = 0x09776C0;						//	VFIndex = 170
+		inline constexpr auto oCRenderer_DrawTextArgs = 0x0977560;					//	VFIndex = 171
+		inline constexpr auto oCRenderer_DrawTextArgs2 = 0x0977760;					//	VFIndex = 172
+		inline constexpr auto oCRenderer_FlushTextMessages = 0x0994600;				//	VFIndex = 303	|	"CRenderer::RT_FlushTextMessages"
 
 		/* CCamera */
-		inline constexpr auto oCCamerViewManager_Update = 0x3B27170;				//	"CCameraViewManager::Update"	
+		inline constexpr auto oCCamerViewManager_Update = 0x3B27150;				//	"CCameraViewManager::Update"	
 
 		/* CSCLocalPlayerMovement */
 		inline constexpr auto oCSCLocalPlayerMovement_Update = 0x4A1C3E0;			//  E8 ? ? ? ? C5 FA 5F FE ; grab the additive as well	; [4.0.1d]
 
 		/* CEntity */
-		inline constexpr auto oCEntity_Init = 0x6E8EAA0;							//	"Entity %llu %s is being initialized from an unexpected state (%u)"
-		inline constexpr auto oCEntity_Shutdown = 0x6EAF760;						//	"CEntity::ShutDown" or "[Entity] CEntitySystem::DeleteEntity %s %s %llu" - function call after isValid check
+		inline constexpr auto oCEntity_Init = 0x6E8EA80;							//	"Entity %llu %s is being initialized from an unexpected state (%u)"
+		inline constexpr auto oCEntity_Shutdown = 0x6EAF740;						//	"CEntity::ShutDown" or "[Entity] CEntitySystem::DeleteEntity %s %s %llu" - function call after isValid check
 
 		/* entity helpers */
 		inline constexpr auto oIsValidEntity = 0x0317A90;							//	^ found when looking for CEntity::ShutDown	:	C5 F2 5E F0 E8 ?? ?? ?? ?? 84 C0 75 05 ; is_valid_handle_typeB
@@ -441,22 +440,22 @@ namespace StarCitizen
 		inline constexpr auto oIsValidRenderProxy = 0x038B430;						//	xref GetRenderProxy , is generally the following call ; AssetMeta::HasActorSubresource
 
 		/* CEntitySystem */
-		inline constexpr auto oCEntitySystem_Update = 0x6EB3980;					//	"CEntitySystem::Update"
-		inline constexpr auto oCEntitySystem_SpawnEntity = 0x6EB0030;				//	"CEntitySystem::SpawnEntityImpl"
-		inline constexpr auto oCEntitySystem_DeleteEntity = 0x6E768C0;				//	"CEntitySystem::DeleteEntity"
-		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6E84B10;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
+		inline constexpr auto oCEntitySystem_Update = 0x6EB3960;					//	"CEntitySystem::Update"
+		inline constexpr auto oCEntitySystem_SpawnEntity = 0x6EB0010;				//	"CEntitySystem::SpawnEntityImpl"
+		inline constexpr auto oCEntitySystem_DeleteEntity = 0x6E768A0;				//	"CEntitySystem::DeleteEntity"
+		inline constexpr auto oCEntitySystem_GetEntityZoneByID = 0x6E84AF0;			//  "CEntitySystem::GetEntityFromIDInternal" xref is method +11 before method+49
 
 		/* CRenderProxy */
-		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x6DF2940;				//	"CRenderProxy::GetLocalBounds" 2nd xref
-		inline constexpr auto oCActor_GetBoneTransform = 0x68E6B60;					//	"CSCActorResultAdditiveStateDematerialize::SpawnEffectAtBone" around Ln. 30 ; [4.0.1d]							
+		inline constexpr auto oCRenderProxy_GetLocalBounds = 0x6DF2920;				//	"CRenderProxy::GetLocalBounds" 2nd xref
+		inline constexpr auto oCActor_GetBoneTransform = 0x68E6B40;					//	"CSCActorResultAdditiveStateDematerialize::SpawnEffectAtBone" around Ln. 30 ; [4.0.1d]							
 
 		/* */
 		inline constexpr auto oCRigidEntity_VerifyExistingContacts = 0x68066C0;		//	"CRigidEntity::VerifyExistingContacts"
 
 		/* [DEV] Fly Mode Command */
-		inline constexpr auto oGetIActor = 0x690C070;								//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
-		inline constexpr auto oCCharacterStateHiearchy_SetState = 0x5DE8660;		//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
-		inline constexpr auto oCCharacterStateHiearchy_VerifyState = 0x510F160;		//		"FlyMode/NoClip ON"
+		inline constexpr auto oGetIActor = 0x690C050;								//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
+		inline constexpr auto oCCharacterStateHiearchy_SetState = 0x5DE8640;		//		"Not enabling no clip fly mode after goto as the dev tools DLL is missing."
+		inline constexpr auto oCCharacterStateHiearchy_VerifyState = 0x510F140;		//		"FlyMode/NoClip ON"
 
 		/* Weapon and Equipment params */
 		inline constexpr auto oCSCAmmoContainerComponent_GetAmmoCount = 0x59290C0;	//		"Weapon::CAmmoContainerComponent::GetAmmoCount" - "Weapon::Action::SWeaponActionFireSingleState" analyze vfTable between __StarEngineModule__ calls
@@ -609,6 +608,7 @@ namespace StarCitizen
 		{
 			/* core */
 			inline bool bFreeModule = false;									//	free module handle
+			static FILE* console_input_stream = nullptr;
 			static FILE* console_output_stream = nullptr;
 			static HANDLE console_handle = nullptr;
 			static HWND console_wndw = nullptr;
